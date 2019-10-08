@@ -1,16 +1,30 @@
 require("dotenv").config();
-var express = require("express");
-var exphbs = require("express-handlebars");
+const express     = require("express"),
+      exphbs      = require("express-handlebars"),
+      passport    = require("./config/passport"),
+      session     = require("express-session"),
+      bodyParser  = require("body-parser");
 
-var db = require("./models");
+//requiring routes
+const db = require("./models");
 
-var app = express();
-var PORT = process.env.PORT || 3000;
+let app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static("public"));
+app.use(session({ 
+  secret: "dogs are great", 
+  resave: true, 
+  saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Handlebars
 app.engine(
