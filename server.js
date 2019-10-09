@@ -6,7 +6,7 @@ const express     = require("express"),
       bodyParser  = require("body-parser");
 
 //requiring routes
-const db = require("./models");
+ db = require("./models");
 
 let app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,14 +48,14 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(function() {
-  app.listen(PORT, function() {
-    console.log(
-      "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
-      PORT,
-      PORT
-    );
-  });
-});
+// db.sequelize.sync(syncOptions).then(function() {
+//   app.listen(PORT, function() {
+//     console.log(
+//       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
+//       PORT,
+//       PORT
+//     );
+//   });
+// });
 
 module.exports = app;

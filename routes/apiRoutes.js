@@ -1,4 +1,6 @@
 var db = require("../models");
+let passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function (app) {
 
@@ -10,29 +12,29 @@ module.exports = function (app) {
     })
   );
 
-  app.post("/api/signup", function(req, res) {
+  app.post("/api/signup", function (req, res) {
 
     db.User.create({
       name: req.body.name,
       username: req.body.email,
       password: req.body.password
     })
-      .then(function() {
+      .then(function () {
         res.redirect(307, "/api/login");
       })
-      .catch(function(err) {
+      .catch(function (err) {
         res.status(401).json(err);
       });
   });
 
   // Route for logging user out
-  app.get("/logout", function(req, res) {
+  app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
   });
 
   //gives back some user data
-  app.get("/api/user_data", function(req, res) {
+  app.get("/api/user_data", function (req, res) {
     if (!req.user) {
 
       res.json({});
@@ -48,21 +50,21 @@ module.exports = function (app) {
 
   // Get all examples
   app.get("/api/examples", function (req, res) {
-    db.Example.findAll({}).then(function (dbExamples) {
+    db.Event.findAll({}).then(function (dbExamples) {
       res.json(dbExamples);
     });
   });
 
   // Create a new example
   app.post("/api/examples", function (req, res) {
-    db.Example.create(req.body).then(function (dbExample) {
+    db.Event.create(req.body).then(function (dbExample) {
       res.json(dbExample);
     });
   });
 
   // Delete an example by id
   app.delete("/api/examples/:id", function (req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function (dbExample) {
+    db.Event.destroy({ where: { id: req.params.id } }).then(function (dbExample) {
       res.json(dbExample);
     });
   });
