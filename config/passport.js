@@ -1,5 +1,6 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 const db = require("../models");
 
@@ -31,7 +32,27 @@ passport.use(new LocalStrategy(
   }
 ));
 
+passport.use(new GoogleStrategy({
 
+  clientID: process.env.GOOGLE_CLIENT_ID,
+
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+
+  callbackURL: "http://localhost:3000/auth/google/redirect"
+
+},
+function(accessToken, refreshToken, profile, done) {
+
+     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+
+      console.log(profile);
+      return done(err, user);
+
+     });
+
+  }
+
+));
 
 passport.serializeUser(function(user, done) {
 
