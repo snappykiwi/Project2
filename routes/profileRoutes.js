@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const checkLogin = require("../config/middleware/index.js");
+const middleware = require("../config/middleware/index.js");
 
-router.get("/", checkLogin, (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
   res.render("profile", {
     user : req.user
   });
