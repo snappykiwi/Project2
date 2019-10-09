@@ -3,7 +3,9 @@ const express     = require("express"),
       exphbs      = require("express-handlebars"),
       passport    = require("./config/passport"),
       session     = require("express-session"),
-      bodyParser  = require("body-parser");
+      bodyParser  = require("body-parser"),
+      authRoutes  = require("./routes/authRoutes.js"),
+      profRoutes  = require("./routes/profileRoutes.js");
 
 //requiring routes
  db = require("./models");
@@ -38,6 +40,13 @@ app.set("view engine", "handlebars");
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
+
+app.use("./auth", authRoutes);
+app.use("./profile", profRoutes);
+
+app.get("/", (req, res) => {
+  res.render("index");
+})
 
 var syncOptions = { force: false };
 
