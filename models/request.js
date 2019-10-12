@@ -1,11 +1,15 @@
 module.exports = function(sequelize, DataTypes) {
-  let Invite = sequelize.define("Invite", {
+  let Request = sequelize.define("Request", {
     uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
       primaryKey: true
     },
-    date: {
+    dateStart: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    dateEnd: {
       type: DataTypes.DATE,
       allowNull: false
     },
@@ -17,6 +21,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TIME,
       allowNull: false
     },
+    duration: {
+      type: DataTypes.FLOAT(4),
+      allowNull: false
+    },
     status: {
       type: DataTypes.STRING,
       defaultValue: "pending",
@@ -25,16 +33,16 @@ module.exports = function(sequelize, DataTypes) {
 
   });
 
-  Invite.associate = function(models) {
+  Request.associate = function(models) {
     
-    Invite.belongsTo(models.Request, {
+    Request.belongsTo(models.User, {
       foreignKey: {
         allowNull: false
       }
     });
+
+    Request.hasMany(models.Invite);
   };
 
-  return Invite
-
-
+  return Request
 };

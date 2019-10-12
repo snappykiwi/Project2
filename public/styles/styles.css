@@ -1,3 +1,21 @@
 .list-group-item {
   line-height: 2.5;
 }
+
+body {
+  background: #f4f4f4;
+}
+
+p.section-title {
+  font-size: 2em;
+  font-weight: 600;
+}
+
+div.time {
+  display: none;
+}
+
+.datepicker, .timepicker {
+  margin-top: 30px;
+  width: 97%;
+}
