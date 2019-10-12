@@ -1,0 +1,39 @@
+<div id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h1>{{msg}}</h1>
+                <h2>This is where you add events!</h2>
+                <form class="clearfix mb-4" action="POST">
+                    <div class="form-group">
+                        <label for="event-name">Name of the event:</label>
+                        <input type="text" id="event-name" class="form-control" aria-describedby="event-name"
+                            placeholder="Name of event">
+                        <input type="text" id="event-start-time" class="form-control"
+                            aria-describedby="event-start-time" placeholder="Event Start Time">
+                        <input type="text" id="event-date" class="form-control" aria-describedby="event-date"
+                            placeholder="Event date">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-description">Purpose of event:</label>
+                        <textarea class="form-control" id="event-description" aria-describedby="event-description"
+                            placeholder="event-description"></textarea>
+                    </div>
+                    <button id="event-submit" class="btn btn-primary float-right">Submit</button>
+                </form>
+                <h3>Current Events:</h3>
+                <ul id="event-list" class="list-group">
+                    {{#each events}}
+                    <li data-id="{{this.id}}" class="list-group-item">
+                        <a href="events/{{this.id}}">{{this.title}}</a>
+                        <button class="btn btn-danger float-right delete">ｘ</button>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>

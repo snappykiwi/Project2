@@ -18,6 +18,12 @@ module.exports = function(sequelize, DataTypes) {
     eventDate: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    attendee: {
+      type: DataTypes.STRING
     }
   });
 
