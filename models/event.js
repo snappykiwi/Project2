@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.TIME,
       allowNull: false,
     },
+    endTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
     eventDate: {
       type: DataTypes.DATE,
       allowNull: false
