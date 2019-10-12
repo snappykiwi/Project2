@@ -1,0 +1,28 @@
+body.home {
+    height: 100%;
+    background: linear-gradient(90deg, #f4f4f4 50%, #585858 50%);
+}
+
+.titleHomePage {
+    font-family: 'Be Vietnam', sans-serif;
+    font-size: 75px;
+    padding-top: 40px;
+    padding-left: 225px;
+    padding-bottom: 100px;
+}
+
+.img {
+    padding-left: 150px;
+}
+
+.signUpHomePage {
+    padding-left: 85px;
+    font-family: 'Be Vietnam', sans-serif;
+    font-size: 40px;
+    
+}
+
+.logInHomePage {
+    float: right;
+    padding-right: 225px;
+}
