@@ -5,7 +5,9 @@ const express     = require("express"),
       session     = require("express-session"),
       bodyParser  = require("body-parser"),
       authRoutes  = require("./routes/authRoutes.js"),
-      profRoutes  = require("./routes/profileRoutes.js");
+      profRoutes  = require("./routes/profileRoutes.js"),
+      nodemailer  = require("nodemailer"),
+      hbs         = require("nodemailer-handlebars");
 
 //requiring routes
 const db = require("./models");
@@ -27,6 +29,66 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASS
+  }
+});
+
+transporter.use('compile', hbs({
+  viewEngine: 'express-handlebars',
+  viewPath: 'views/'
+}));
+
+let options = {
+  from: 'schedulingapp742@gmail.com',
+  to: 'kpoole133@gmail.com',
+  subject: 'Test',
+  text: 'does this work?',
+  template: 'email',
+  context: {
+      name: 'testtesttest'
+  } // send extra values to template
+};
+
+transporter.sendMail(options, (err, data) => {
+  if (err) {
+      return console.log('Error ' + err);
+  }
+  return console.log('Email sent!');
+});
+
+// const options = {
+//   viewEngine: {
+//     extName: '.hbs',
+//     partialsDir: './views',
+//     layoutsDir: './views',
+//     defaultLayout: 'email.hbs',
+//   },
+//   viewPath: './views',
+//   extName: '.hbs',
+// };
+
+// transporter.use('compile', hbs(options));
+// let mail = {
+//    from: 'schedulingapp742@gmail.com',
+//    to: 'kpoole133@gmail.com',
+//    subject: 'Test',
+//    template: 'email',
+//    context: {
+//        name: 'Name'
+//    },
+//    text: 'Did this really send?'
+// }
+// transporter.sendMail(mail, function(err, info) {
+//   if (err) {
+//     console.log("error " + err);
+//   } else {
+//     console.log("Message sent");
+//   }
+// });
 
 // Handlebars
 app.engine(
