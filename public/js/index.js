@@ -1,47 +1,84 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+//event hooks
+var $eventSubmitButton = $("#event-submit");
+var $eventList = $("#event-list");
+var $eventName = $("#event-name");
+var $eventStartTime = $("#event-start-time");
+var $eventDate = $("#event-date");
+var $eventDescription = $("#event-description");
+var $eventAttendee = $("#event-attendee");
+// user hooks
+var $userSubmitButton = $("#user-submit");
+var $userList = $("#user-list");
+var $userName = $("#user-name");
+var $userPassword = $("#user-password");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
+
+  saveEvent: function (event) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
+      url: "api/events",
+      data: JSON.stringify(event)
     });
   },
-  getExamples: function() {
+  saveUser: function (event) {
+    console.log(event)
     return $.ajax({
-      url: "api/examples",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "POST",
+      url: "api/users",
+      data: JSON.stringify(event)
+    });
+  },
+
+  getEvents: function (events) {
+    return $.ajax({
+      url: "api/events",
       type: "GET"
+    })
+  },
+
+  getUser: function (user) {
+    return $.ajax({
+      url: "api/users",
+      type: "GET"
+    })
+  },
+
+  deleteEvent: function (id) {
+    return $.ajax({
+      url: "api/events/" + id,
+      type: "DELETE"
     });
   },
-  deleteExample: function(id) {
+  deleteUser: function (id) {
     return $.ajax({
-      url: "api/examples/" + id,
+      url: "api/users/" + id,
       type: "DELETE"
     });
   }
 };
 
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
+
+//refresh event
+
+var refreshEvent = function () {
+  API.getEvents().then(function (data) {
+    var $events = data.map(function (event) {
       var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+        .text(event.title)
+        .attr("href", "/events/" + event.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": example.id
+          "data-id": event.id
         })
         .append($a);
 
@@ -54,46 +91,130 @@ var refreshExamples = function() {
       return $li;
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
+    $eventList.empty();
+    $eventList.append($events);
   });
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+//refresh User
+
+var refreshUser = function () {
+
+  console.log("User Refresh Fired")
+  API.getUser().then(function (data) {
+    var $users = data.map(function (user) {
+      var $a = $("<a>")
+        .text(user.id)
+        .attr("href", "/users/" + user.id);
+
+      var $li = $("<li>")
+        .attr({
+          class: "list-group-item",
+          "data-id": user.id
+        })
+        .append($a);
+
+      var $button = $("<button>")
+        .addClass("btn btn-danger float-right delete")
+        .text("ｘ");
+
+      $li.append($button);
+
+      return $li;
+    });
+
+    $userList.empty();
+    $userList.append($users);
+  });
+};
+
+// handleFormSubmit is called whenever we submit a new event
+// Save the new event to the db and refresh the list
+
+var handleEventSubmit = function (event) {
   event.preventDefault();
+  console.log("Event Submit Button Clicked!")
+  var event = {
+    title: $eventName.val().trim(),
+    startTime: $eventStartTime.val().trim(),
+    eventDate: $eventDate.val().trim(),
+    description: $eventDescription.val().trim(),
+  }
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
+  if (!(event.title && event.startTime && event.eventDate)) {
+    alert("Please make sure everything is filled out correctly, thank yoU!")
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
+  }
+
+  API.saveEvent(event).then(function () {
+    refreshEvent();
+  });
+
+
+
+  $eventName.val("");
+  $eventStartTime.val("");
+  $eventDate.val("");
+  $eventDescription.val("");
+
+};
+
+//Handle User Submit
+
+var handleUserSubmit = function (event) {
+
+  event.preventDefault();
+  var user = {
+    name: $userName.val().trim(),
+    password: $userPassword.val().trim()
+  }
+
+  console.log(user.name);
+  console.log(user.password);
+
+  if (!(user.name && user.password)) {
+    alert("Please make sure everything is filled out correctly, thank yoU!")
     return;
   }
 
-  API.saveExample(example).then(function() {
-    refreshExamples();
+  API.saveUser(user).then(function () {
+    console.log("made it this far")
+    refreshUser();
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
+  $userName.val("");
+  $userPassword.val("");
 };
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
+// handleDeleteBtnClick is called when an event's delete button is clicked
+// Remove the event from the db and refresh the list
+
+
+var handleEventBtnClick = function () {
+  var idToDelete = $(this)
+    .parent()
+    .attr("data-id")
+
+  API.deleteEvent(idToDelete).then(function () {
+    refreshEvent();
+  })
+};
+
+var deleteUserBtnClick = function () {
   var idToDelete = $(this)
     .parent()
     .attr("data-id");
 
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
-  });
-};
+  API.deleteUser(idToDelete).then(function () {
+    refreshUser();
+  })
+}
+
 
 // Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+
+$eventSubmitButton.on("click", handleEventSubmit);
+$eventList.on("click", ".delete", handleEventBtnClick)
+
+$userSubmitButton.on("click", handleUserSubmit);
+$userList.on("click", ".delete", deleteUserBtnClick);

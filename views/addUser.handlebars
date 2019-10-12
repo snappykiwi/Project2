@@ -1,0 +1,33 @@
+<div id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h1>{{msg}}</h1>
+                <h2>Register Now!</h2>
+                <form class="clearfix mb-4" action="POST">
+                    <div class="form-group">
+                        <label for="user-name">User Name</label>
+                        <input type="text" id="user-name" class="form-control" aria-describedby="example-text"
+                            placeholder="Enter User Name">
+                        <label for="user-password">User Password</label>
+                        <input type="text" id="user-password" class="form-control" aria-describedby="example-text"
+                            placeholder="Enter Password">
+                    </div>
+                    <button id="user-submit" class="btn btn-primary float-right">Submit</button>
+                </form>
+                <h3>Users:</h3>
+                <ul id="user-list" class="list-group">
+                    {{#each users}}
+                    <li data-id="{{this.id}}" class="list-group-item">
+                        <a href="users/{{this.id}}">{{this.name}}</a>
+                        <button class="btn btn-danger float-right delete">ｘ</button>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
