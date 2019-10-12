@@ -15,6 +15,10 @@ div.time {
   display: none;
 }
 
+div.timepicker-digital-display {
+  background-color: #3cace0e3;
+}
+
 .datepicker, .timepicker {
   margin-top: 30px;
   width: 97%;

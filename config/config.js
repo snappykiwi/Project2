@@ -11,7 +11,7 @@ const config = {
   "test": {
     "username": "root",
     "password": null,
-    "database": "schedule_db",
+    "database": "test_db",
     "host": "localhost",
     "dialect": "mysql",
     "logging": false
