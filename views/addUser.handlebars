@@ -1,33 +1,26 @@
-<div id="home">
-    <div class="container">
-        <div class="row">
-            <div class="col-8 offset-2">
-                <h1>{{msg}}</h1>
-                <h2>Register Now!</h2>
-                <form class="clearfix mb-4" action="POST">
-                    <div class="form-group">
-                        <label for="user-name">User Name</label>
-                        <input type="text" id="user-name" class="form-control" aria-describedby="example-text"
-                            placeholder="Enter User Name">
-                        <label for="user-password">User Password</label>
-                        <input type="text" id="user-password" class="form-control" aria-describedby="example-text"
-                            placeholder="Enter Password">
-                    </div>
-                    <button id="user-submit" class="btn btn-primary float-right">Submit</button>
-                </form>
-                <h3>Users:</h3>
-                <ul id="user-list" class="list-group">
-                    {{#each users}}
-                    <li data-id="{{this.id}}" class="list-group-item">
-                        <a href="users/{{this.id}}">{{this.name}}</a>
-                        <button class="btn btn-danger float-right delete">ｘ</button>
-                    </li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
+<h1 class="signUpAddUser">Sign up</h1>
+<form class="formAddUser">
+    <div class="form-group col-sm-4 col-md-7 col-md-7 mt-5">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
-</div>
+    <div class="form-group col-sm-4 col-md-7 col-md-7 mt-5">
+        <label for="exampleInputPassword1">Username</label>
+        <input class="form-control" id="exampleInputPassword1" placeholder="Username">
+    </div>
+    <div class="form-group col-sm-4 col-md-7 col-md-7 mt-5">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-group col-sm-4 col-md-7 col-md-7 mt-5">
+        <label for="exampleInputPassword1">Re Enter Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
