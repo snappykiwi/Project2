@@ -93,11 +93,42 @@ module.exports = function (app) {
     });
   });
 
+  //add new user
+  app.post("/api/users", function (res, req) {
+    db.User.create(req.body).then(function (dbUser) {
+      console.log("Firing Api Users!")
+      console.log(dbUser);
+      res.json(dbUser);
+
+    });
+  })
+
+  //Delete an event by id
+  app.delete("/api/events/:id", function (req, res) {
+    db.Event.destroy({ where: { id: req.params.id } }).then(function (dbEvent) {
+      res.json(dbEvent);
+    });
+  });
+
   //Delete user by id
   app.delete("/api/users/:id", function (req, res) {
     db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
       res.json(dbUser);
     });
+  });
+
+  app.get("/api/invite/:id", (req, res) => {
+    res.json([
+      {
+        name: "bob",
+        date: 1570817096319,
+        times: [
+          1570817044814, 1570817095477, 1570817096319
+        ],
+        reason: "code",
+        invite_id: "bskdfai032"
+      }
+    ])
   });
 
   //Edit event

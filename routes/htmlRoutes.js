@@ -1,9 +1,35 @@
 var db = require("../models");
 
-
-  
 module.exports = function (app) {
-  // Load index page
+  
+  app.get("/inbox", (req, res) => {
+    const user = req.user;
+  //   db.Invite.findAll({
+  //     where : {
+  //       userId: user.id
+  //     },
+  //     include: [db.Event]
+  //   }).then(function(invites) {
+  //     res.render("inbox", {
+  //       invites: invites
+  //     });
+  //   });
+  // });
+    // use user.uid to make a sequelize query for invites
+    res.render("inbox", {
+      invites: [{
+        owner: "bob",
+        eventTitle: "coding",
+        startTime: 1570817096319,
+        endTime: 1570817096319,
+        eventDate: 1570817096319,
+        reason: "code",
+        invite_id: "bskdfai032",
+        userId: "fasdfasdf32",
+        eventId: "dfa32rdf"
+      }]
+    })
+  })
   app.get("/", function (req, res) {
     db.Event.findAll({}).then(function (dbEvent) {
       res.render("index", {
@@ -65,4 +91,5 @@ module.exports = function (app) {
   app.get("*", function (req, res) {
     res.render("404");
   });
+
 };
