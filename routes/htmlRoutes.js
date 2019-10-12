@@ -67,9 +67,14 @@ module.exports = function (app) {
       res.render("addUser", {
         msg: "Add User",
         user: dbUsers
-      })
+      });
 
-    })
+    });
+  });
+
+  
+  app.get("/request", function(req, res) {
+    res.render("request")
   });
 
 

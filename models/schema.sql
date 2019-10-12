@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS schedule_db;
 CREATE DATABASE schedule_db;
-USE schedule_db;
+-- USE schedule_db;
 
 -- sequelize user has many events
 -- sequelize user has many invites

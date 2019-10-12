@@ -25,20 +25,20 @@ module.exports = function (sequelize, DataTypes) {
 
   // Event.associate = function(models) {
 
-  //   Event.belongsTo(models.User, {
-
-  //   });
-
-  // };
-
-  // Event.associate = function(models) {
-
   //   Event.hasMany(models.Invite, {
 
   //   });
 
   // };
 
+  Event.associate = function(models) {
+    Event.belongsTo(models.User, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
+  }
+  
   return Event;
 
 };
