@@ -1,6 +1,6 @@
-module.exports = function(sequelize, DataTypes) {
-  return Event = sequelize.define("Event", {
-    title : {
+module.exports = function (sequelize, DataTypes) {
+  let Event = sequelize.define("Event", {
+    eventTitle : {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -11,14 +11,34 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TIME,
       allowNull: false,
     },
-    endTime: {
-      type: DataTypes.TIME,
-      allowNull: false
-    },
     eventDate: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    attendee: {
+      type: DataTypes.STRING
     }
   });
+
+  // Event.associate = function(models) {
+
+  //   Event.belongsTo(models.User, {
+
+  //   });
+
+  // };
+
+  // Event.associate = function(models) {
+
+  //   Event.hasMany(models.Invite, {
+
+  //   });
+
+  // };
+
+  return Event;
 
 };
