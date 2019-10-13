@@ -29,36 +29,38 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-let transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASS
-  }
-});
+// let transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.EMAIL,
+//     pass: process.env.PASS
+//   }
+// });
 
-transporter.use('compile', hbs({
-  viewEngine: 'express-handlebars',
-  viewPath: 'views/'
-}));
+// transporter.use('compile', hbs({
+//   viewEngine: 'express-handlebars',
+//   viewPath: 'views/'
+// }));
 
-let options = {
-  from: 'schedulingapp742@gmail.com',
-  to: 'kpoole133@gmail.com',
-  subject: 'Test',
-  text: 'does this work?',
-  template: 'email',
-  context: {
-      name: 'testtesttest'
-  } // send extra values to template
-};
+// let options = {
+//   from: 'schedulingapp742@gmail.com',
+//   to: 'kpoole133@gmail.com',
+//   subject: 'Test',
+//   text: 'does this work?',
+//   template: 'email',
+//   context: {
+//       name: 'testtesttest'
+//   }
+// };
 
-transporter.sendMail(options, (err, data) => {
-  if (err) {
-      return console.log('Error ' + err);
-  }
-  return console.log('Email sent!');
-});
+// transporter.sendMail(options, (err, data) => {
+//   if (err) {
+//       return console.log('Error ' + err);
+//   }
+//   return console.log('Email sent!');
+// });
+
+// ********************
 
 // const options = {
 //   viewEngine: {

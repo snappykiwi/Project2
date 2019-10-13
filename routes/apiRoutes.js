@@ -6,7 +6,9 @@ module.exports = function (app) {
   // AUTH API ROUTES
 
   app.post('/api/login',
-    passport.authenticate("local"), 
+    passport.authenticate("local", { successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true }), 
     function (req, res) {
       res.json(req.user);
     }
