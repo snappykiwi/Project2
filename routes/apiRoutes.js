@@ -6,13 +6,25 @@ module.exports = function (app) {
   // AUTH API ROUTES
 
   app.post('/api/login',
-    passport.authenticate("local", { successRedirect: '/',
+    passport.authenticate("local", { successRedirect: '/home',
     failureRedirect: '/login',
     failureFlash: true }), 
     function (req, res) {
+      console.log(req.user);
       res.json(req.user);
     }
   );
+
+  // app.get('/login', function(req, res, next) {
+  //   passport.authenticate('local', function(err, user, info) {
+  //     if (err) { return next(err); }
+  //     if (!user) { return res.redirect('/login'); }
+  //     req.logIn(user, function(err) {
+  //       if (err) { return next(err); }
+  //       return res.redirect('/users/' + user.username);
+  //     });
+  //   })(req, res, next);
+  // });
 
   app.post("/api/signup", function (req, res) {
 
@@ -78,7 +90,7 @@ module.exports = function (app) {
 
   // USER API ROUTES
   //get all users
-  app.get("/api/user", function (req, res) {
+  app.get("/api/users", function (req, res) {
     db.User.findAll({}).then(function (dbUser) {
       res.json(dbUser);
     });
@@ -101,6 +113,27 @@ module.exports = function (app) {
     });
   });
 
+
+  //REQUEST ROUTES
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
+      
+      }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
+    });
+  });
+
+
+  //INVITE ROUTE
   app.get("/api/invite/:id", (req, res) => {
     res.json([
       {

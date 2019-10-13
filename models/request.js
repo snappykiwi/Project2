@@ -15,11 +15,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     startTime: {
       type: DataTypes.TIME, 
-      allowNull: false
+      allowNull: true
     },
     endTime: {
       type: DataTypes.TIME,
-      allowNull: false
+      allowNull: true
     },
     duration: {
       type: DataTypes.FLOAT(4),
