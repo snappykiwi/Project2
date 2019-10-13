@@ -62,13 +62,59 @@
   </div>
 
   <div class="row">
-    <button id="submit-request" class="col btn waves-effect">Submit</button>
+    <div class="col s12 m6">
+
+      <p class="col s12 center section-title">Duration</p>
+
+      <p class="col s12 center">How long will this event take?</p>
+
+      <div class="row">
+
+        <div class="input-field col s6">
+          <select id="dur-hours">
+            <option value="0">0</option>
+            <option value="1" defualt>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+          <label>Hours</label>
+        </div>
+
+        <div class="input-field col s6">
+          <select id="dur-mins">
+            <option value="1" defualt>0</option>
+            <option value="2">15</option>
+            <option value="3">30</option>
+            <option value="4">45</option>
+          </select>
+          <label>Minutes</label>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col s12 m6">
+
+      <p class="col s12 center section-title">Reason</p>
+
+      <p class="col s12 center">Give a short reason or title for your request</p>
+      <input class="col s6 offset-s3 m12" id="req-reason" type="text">
+
+    </div>
+
   </div>
 
 
-
-
-
-
+  <div class="row">
+    <button id="submit-request" class="col btn waves-effect">Submit</button>
+  </div>
 
 </div>
+
+<script src="js/request.js"></script>

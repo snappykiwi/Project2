@@ -6,31 +6,50 @@ const db = require("../models");
 
 passport.use(new LocalStrategy(
 
-  function(username, password, done) {
+  function (username, password, done) {
 
-    db.User.findOne({ 
+    db.User.findOne({
       where: {
-        username: username 
+        username: username
       }
-    }).then(function (err, user) {
+    }).then(function (dbUser) {
 
-      if (err) { return done(err); }
-
-      if (!user) {
-
-        return done(null, false, { message: 'Incorrect username.' });
-
-      }
-      if (!user.validPassword(password)) {
-
-        return done(null, false, { message: 'Incorrect password.' });
-
+      if (!dbUser) {
+        return done(null, false, {
+          message: "incorrect email"
+        });
       }
 
-      return done(null, user);
+      else if (!dbUser.validPassword(password)) {
+        return done(null, false, {
+          message: "incorrect password"
+        });
+      }
+      return done(null, dbUser);
+
     });
   }
 ));
+
+//     .then(function (err, user) {
+
+//       if (err) { return done(err); }
+
+//       if (!user) {
+
+//         return done(null, false, { message: 'Incorrect username.' });
+
+//       }
+//       if (!user.validPassword(password)) {
+
+//         return done(null, false, { message: 'Incorrect password.' });
+
+//       }
+
+//       return done(null, user);
+//     });
+//   }
+// ));
 
 passport.use(new GoogleStrategy({
 
@@ -41,28 +60,28 @@ passport.use(new GoogleStrategy({
   callbackURL: "http://localhost:3000/auth/google/redirect"
 
 },
-function(accessToken, refreshToken, profile, done) {
+  function (accessToken, refreshToken, profile, done) {
 
-     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
 
       console.log(profile);
       return done(err, user);
 
-     });
+    });
 
   }
 
 ));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
 
   done(null, user.id);
 
 });
 
-passport.deserializeUser(function(id, done) {
-  
-  db.User.findById(id, function(err, user) {
+passport.deserializeUser(function (id, done) {
+
+  db.User.findById(id, function (err, user) {
 
     done(err, user);
 
