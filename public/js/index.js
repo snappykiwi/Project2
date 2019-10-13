@@ -59,7 +59,7 @@ $(document).ready(function () {
         password: password
       })
         .then(function () {
-          window.location.replace("/request");
+          window.location.replace("/home");
         })
         .catch(function (err) {
           console.log(err);

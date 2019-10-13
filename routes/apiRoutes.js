@@ -12,12 +12,6 @@ module.exports = function (app) {
     function (req, res) {
       res.json(req.user);
     }
-
-    // passport.authenticate('local', {
-    //   successRedirect: '/request',
-    //   failureRedirect: '/inbox',
-    //   failureFlash: true
-    // })
   );
 
   app.post("/api/signup", function (req, res) {
