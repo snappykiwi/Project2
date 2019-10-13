@@ -1,5 +1,5 @@
 body {
-    background: #f4f4f4;
+    background: #ebe5d9;
   }
 
 .signUpAddUser {
@@ -8,6 +8,6 @@ body {
 }
 
 .formAddUser {
-  text-align: center;
   padding-left: 420px;
+  padding-right: 420px;
 }
