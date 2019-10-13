@@ -3,19 +3,26 @@ const passport = require("passport");
 
 module.exports = function (app) {
 
+  // AUTH API ROUTES
+
   app.post('/api/login',
-    passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/login',
-      failureFlash: true
-    })
+    passport.authenticate("local"), 
+    function (req, res) {
+      res.json(req.user);
+    }
+
+    // passport.authenticate('local', {
+    //   successRedirect: '/request',
+    //   failureRedirect: '/inbox',
+    //   failureFlash: true
+    // })
   );
 
   app.post("/api/signup", function (req, res) {
 
     db.User.create({
       name: req.body.name,
-      username: req.body.email,
+      username: req.body.username,
       password: req.body.password
     })
       .then(function () {
@@ -47,9 +54,8 @@ module.exports = function (app) {
     }
   });
 
-
+  // EVENT API ROUTES 
   //get all events
-
   app.get("/api/events", function (req, res) {
     db.Event.findAll({}).then(function (dbEvent) {
 
@@ -57,17 +63,8 @@ module.exports = function (app) {
     });
   });
 
-  //get all users
-
-  app.get("/api/user", function (req, res) {
-    db.User.findAll({}).then(function (dbUser) {
-      res.json(dbUser);
-    })
-  })
-
 
   //create new event
-
   app.post("/api/events", function (req, res) {
     db.Event.create(req.body).then(function (dbEvent) {
       console.log(dbEvent)
@@ -75,16 +72,6 @@ module.exports = function (app) {
     });
   });
 
-  //add new user
-  app.post("/api/users", function (res, req) {
-    db.User.create(req.body).then(function (dbUser) {
-      console.log("Firing Api Users!")
-      console.log(dbUser);
-      res.json(dbUser);
-
-    });
-  })
-
 
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
@@ -93,20 +80,21 @@ module.exports = function (app) {
     });
   });
 
+  // USER API ROUTES
+  //get all users
+  app.get("/api/user", function (req, res) {
+    db.User.findAll({}).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
   //add new user
-  app.post("/api/users", function (res, req) {
+  app.post("/api/users", function (req, res) {
     db.User.create(req.body).then(function (dbUser) {
       console.log("Firing Api Users!")
       console.log(dbUser);
       res.json(dbUser);
 
-    });
-  })
-
-  //Delete an event by id
-  app.delete("/api/events/:id", function (req, res) {
-    db.Event.destroy({ where: { id: req.params.id } }).then(function (dbEvent) {
-      res.json(dbEvent);
     });
   });
 
@@ -128,7 +116,7 @@ module.exports = function (app) {
         reason: "code",
         invite_id: "bskdfai032"
       }
-    ])
+    ]);
   });
 
   //Edit event
@@ -141,7 +129,7 @@ module.exports = function (app) {
         }
       }).then(function (dbEvent) {
         res.json(dbPost);
-      })
-  })
+      });
+  });
 
 };

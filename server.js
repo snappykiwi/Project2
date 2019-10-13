@@ -103,8 +103,8 @@ app.set("view engine", "handlebars");
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-app.use("./auth", authRoutes);
-app.use("./profile", profRoutes);
+// app.use("./auth", authRoutes);
+// app.use("./profile", profRoutes);
 
 app.get("/", (req, res) => {
   res.render("index");

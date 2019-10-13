@@ -25,6 +25,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.FLOAT(4),
       allowNull: false
     },
+    reason: {
+      type: DataTypes.STRING,
+      len: [1,20]
+    },
     status: {
       type: DataTypes.STRING,
       defaultValue: "pending",
