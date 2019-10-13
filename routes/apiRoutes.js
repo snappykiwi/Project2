@@ -82,7 +82,7 @@ module.exports = function (app) {
 
   // USER API ROUTES
   //get all users
-  app.get("/api/user", function (req, res) {
+  app.get("/api/users", function (req, res) {
     db.User.findAll({}).then(function (dbUser) {
       res.json(dbUser);
     });

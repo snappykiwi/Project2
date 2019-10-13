@@ -1,9 +1,35 @@
 $(document).ready(function () {
 
+  let today = moment();
+  let hourDur;
+  let minDur;
+
+
+  let API = {
+
+    getUsers: function (user) {
+      $.get({
+        url: "api/users",
+        success: function (response) {
+          console.log(response);
+        },
+        error: function (error) {
+          console.log(error);
+        }
+
+      })
+    }
+  }
+
+
+  API.getUsers();
+
+
+
+
+
   // initialize materialize drop down menu for request
   $('select').formSelect();
-
-  let today = moment();
 
 
   const start = datepicker('.start', { id: 1 });
@@ -50,8 +76,20 @@ $(document).ready(function () {
 
   });
 
+  $('select#dur-hours').on("change", function (event) {
+    hourDur = $(this).val();
+    console.log(hourDur);
+  });
+  $('select#dur-mins').on("change", function (event) {
+    minDur = $(this).val();
+    console.log(minDur);
+  });
+
 
   $('button#submit-request').on("click", function (event) {
+
+    let friend = $('input#friend').val().trim();
+    console.log(friend);
 
     let dateRange = start.getRange();
     let beginDate = dateRange.start;
@@ -62,6 +100,15 @@ $(document).ready(function () {
     let afterTime = $('input#timeOne').val();
     console.log(`Before the time of: ${beforeTime}`);
     console.log(`After the time of: ${afterTime}`);
+
+    console.log(hourDur, minDur);
+    let duration = parseInt(hourDur) + parseFloat(minDur);
+    console.log(`duration: ${duration}`);
+
+    let reqReason = $('input#req-reason').val().trim();
+    console.log(reqReason);
+
+
 
   });
 
