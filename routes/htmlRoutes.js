@@ -47,6 +47,7 @@ module.exports = function (app) {
 
   
   app.get("/request", function(req, res) {
+    let user = req.user;
     res.render("request")
   });
 
