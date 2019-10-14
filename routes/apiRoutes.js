@@ -15,17 +15,6 @@ module.exports = function (app) {
     }
   );
 
-  // app.get('/login', function(req, res, next) {
-  //   passport.authenticate('local', function(err, user, info) {
-  //     if (err) { return next(err); }
-  //     if (!user) { return res.redirect('/login'); }
-  //     req.logIn(user, function(err) {
-  //       if (err) { return next(err); }
-  //       return res.redirect('/users/' + user.username);
-  //     });
-  //   })(req, res, next);
-  // });
-
   app.post("/api/signup", function (req, res) {
 
     db.User.create({
@@ -74,11 +63,28 @@ module.exports = function (app) {
 
   //create new event
   app.post("/api/events", function (req, res) {
-    db.Event.create(req.body).then(function (dbEvent) {
-      console.log(dbEvent)
-      res.json(dbEvent);
-    });
+
+    db.Event.create({
+      eventTitle: req.body.eventTitle,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      eventDate: req.body.eventDate,
+      description: req.body.description,
+      UserId: req.user.id
+    })
+      .then(function () {
+        console.log("success");
+        // res.redirect(307, "/")
+      })
+      .catch(function (err) {
+        console.log("failed")
+        console.log(err);
+
+        res.status(err).json(err);
+      })
+    // res.json(res);
   });
+
 
 
   //Delete an event by id

@@ -24,6 +24,10 @@ module.exports = function (sequelize, DataTypes) {
     },
     attendee: {
       type: DataTypes.STRING
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull:false
     }
   });
 
