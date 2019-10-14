@@ -13,7 +13,7 @@ const express     = require("express"),
 
 
 //requiring routes
-const db = require("./models");
+ db = require("./models");
 
 let app = express();
 const PORT = process.env.PORT || 3000;
