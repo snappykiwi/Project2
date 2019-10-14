@@ -28,13 +28,21 @@ module.exports = function(sequelize, DataTypes) {
   Invite.associate = function(models) {
     
     Invite.belongsTo(models.Request, {
-      foreignKey: {
-        allowNull: false
-      }
+      foreignKey: 'invitable_id',
+      constraints: false,
+      as: 'request'
+    });
+    
+    Invite.belongsTo(models.Event, {
+      foreignKey: 'invitable_id',
+      constraints: false,
+      as: 'event'
     });
 
+    Invite.belongsTo(models.User, {
+      constraints: false,
+    });
 
-    //Invite has one user? the person being invited? 
   };
 
   return Invite
