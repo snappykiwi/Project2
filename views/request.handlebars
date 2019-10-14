@@ -11,9 +11,23 @@
   </div>
 
   <div class="row">
+
+    <div class="input-field col s6 m4 offset-s3 offset-m4">
+      <select id="friend">
+        {{#each users}}
+          {{> requests/user-block }}
+        {{/each}}
+      </select>
+      <label>Friend To Invite</label>
+    </div>
+
+  </div>
+
+
+  {{!-- <div class="row">
     <input class="col s12 m6 offset-m3" id="friend" type="text">
     <label class="col s12 m6 offset-m3" for="friend"></label>
-  </div>
+  </div> --}}
 
 
   <div class="row">
@@ -87,10 +101,10 @@
 
         <div class="input-field col s6">
           <select id="dur-mins">
-            <option value="1" defualt>0</option>
-            <option value="2">15</option>
-            <option value="3">30</option>
-            <option value="4">45</option>
+            <option value="0" defualt>0</option>
+            <option value=".25">15</option>
+            <option value=".5">30</option>
+            <option value=".75">45</option>
           </select>
           <label>Minutes</label>
         </div>

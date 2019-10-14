@@ -5,7 +5,12 @@ const express     = require("express"),
       session     = require("express-session"),
       bodyParser  = require("body-parser"),
       authRoutes  = require("./routes/authRoutes.js"),
-      profRoutes  = require("./routes/profileRoutes.js");
+      profRoutes  = require("./routes/profileRoutes.js"),
+      nodemailer  = require("nodemailer"),
+      hbs         = require("nodemailer-express-handlebars"),
+      { google }  = require("googleapis"),
+      OAuth2      = google.auth.OAuth2;
+
 
 //requiring routes
 const db = require("./models");
@@ -27,6 +32,41 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+const oauth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  "https://developers.google.com/oauthplayground"
+);
+
+oauth2Client.setCredentials({
+  refresh_token: process.env.refresh_token
+});
+const accessToken = oauth2Client.getAccessToken();
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: "schedulingapp742@gmail.com",
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    refreshToken: process.env.refresh_token,
+    accessToken: accessToken
+  }
+});
+
+const mailOptions = {
+  from: "schedulingapp742@gmail.com",
+  to: "schedulingapp742@gmail.com",
+  subject: "This is a test Email with OAuth",
+  generateTextFromHTML: true,
+  html: "<b>test</b>"
+};
+
+smtpTransport.sendMail(mailOptions, (error, response) => {
+  error ? console.log(error) : console.log(response);
+  smtpTransport.close();
+})
 
 // Handlebars
 app.engine(
@@ -41,13 +81,6 @@ app.set("view engine", "handlebars");
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-// app.use("./auth", authRoutes);
-// app.use("./profile", profRoutes);
-
-app.get("/", (req, res) => {
-  res.render("index");
-})
-
 var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
@@ -56,13 +89,8 @@ if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
 
-// db.sequelize.sync({force: true}).then( function() {
-//   console.log(`connected to db`);
-// }).catch(function() {
-//   console.log(`Error!`);
-// })
 // Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync({force: false}).then(function() {
+db.sequelize.sync(syncOptions).then(function() {
   app.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
