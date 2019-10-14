@@ -43,14 +43,6 @@ $(document).ready(function () {
           window.location.replace("/");
         })
         .catch(console.log("error"));
-      // return $.ajax({
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   type: "POST",
-      //   url: "api/signup",
-      //   data: JSON.stringify(event)
-      // });
     },
 
     loginUser: function (username, password) {

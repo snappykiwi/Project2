@@ -5,21 +5,35 @@ const Op = db.Sequelize.Op
 module.exports = function (app) {
   
   app.get("/", function (req, res) {
-    db.Event.findAll({}).then(function (dbEvent) {
-      res.render("index", {
-        msg: "The Home Page!",
-        events: dbEvent
+    if(!req.user) {
+      res.render("index")
+    }
+    else {
+      db.Event.findAll({
+        where: {
+          UserId: req.user.id
+        },
+        include: [ db.User ]
+      }).then(function (dbEvents) {
+        res.render("userHome", {
+          events: dbEvents
+        });
       });
-    });
+
+    }
   });
 
 
   //user homepage
   app.get("/home", function (req, res) {
-    db.Event.findAll({}).then(function (dbResponse) {
+    db.Event.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function (dbUserEvents) {
       res.render("userHome", {
         msg: "Welcome Back",
-        homepage: dbResponse
+        userEvents: dbUserEvents
       })
     })
   })
@@ -47,7 +61,7 @@ module.exports = function (app) {
   });
 
   
-  app.get("/request", function(req, res) {
+  app.get("/request", middleware.isLoggedIn, function(req, res) {
     let user = req.user;
     db.User.findAll({
       where: {
