@@ -21,15 +21,18 @@ $(document).ready(function () {
   // The API object contains methods for each kind of request we'll make
   let API = {
 
-    saveEvent: function (event) {
-      return $.ajax({
-        headers: {
-          "Content-Type": "application/json"
-        },
-        type: "POST",
-        url: "api/events",
-        data: JSON.stringify(event)
-      });
+    saveEvent: function (eventData) {
+      $.post("/api/events", {
+        eventTitle: eventData.eventTitle,
+        startTime: eventData.startTime,
+        endTime: eventData.endTime,
+        eventDate: eventData.eventDate,
+        description: eventData.description
+      })
+        .then(function (data) {
+          window.location.replace("/");
+          if(err) throw err;
+        })      
     },
 
     saveUser: function (username, name, password) {
@@ -94,13 +97,14 @@ $(document).ready(function () {
     API.getEvents().then(function (data) {
       let $events = data.map(function (event) {
         let $a = $("<a>")
-          .text(event.title)
-          .attr("href", "/events/" + event.id);
+          .text(event.eventTitle)
+          .attr("href", "/events/" + event.id)
+          .attr("text","events" + `Starting At ${event.startTime}`)
 
         let $li = $("<li>")
           .attr({
             class: "list-group-item",
-            "data-id": event.id
+            "data-id": event.id,
           })
           .append($a);
 
@@ -168,97 +172,97 @@ $(document).ready(function () {
 
 
 
-// handleFormSubmit is called whenever we submit a new event
-// Save the new event to the db and refresh the list
+  // handleFormSubmit is called whenever we submit a new event
+  // Save the new event to the db and refresh the list
 
-let handleEventSubmit = function (event) {
-  event.preventDefault();
-  console.log("Event Submit Button Clicked!")
-  let eventData = {
-    eventTitle: $eventName.val().trim(),
-    startTime: $eventStartTime.val().trim(),
-    endTime: $eventStartTime.val().trim(),
-    eventDate: $eventDate.val().trim(),
-    description: $eventDescription.val().trim(),
+  let handleEventSubmit = function (event) {
+    event.preventDefault();
+    console.log("Event Submit Button Clicked!")
+    let eventData = {
+      eventTitle: $eventName.val().trim(),
+      startTime: $eventStartTime.val().trim(),
+      endTime: $eventStartTime.val().trim(),
+      eventDate: $eventDate.val().trim(),
+      description: $eventDescription.val().trim(),
+    }
+
+    if (!(eventData.eventTitle && eventData.startTime && eventData.eventDate)) {
+      alert("Please make sure everything is filled out correctly, thank you!")
+
+    }
+
+    API.saveEvent(eventData);
+    // refreshEvent();
+
+
+
+
+    // $eventName.val("");
+    // $eventStartTime.val("");
+    // $eventDate.val("");
+    // $eventDescription.val("");
+
+  };
+
+  //Handle User Submit
+
+  let handleUserSubmit = function (event) {
+
+    event.preventDefault();
+
+    let user = {
+      username: $userEmail.val().trim(),
+      name: $userName.val().trim(),
+      password: $userPassword.val().trim()
+    }
+
+    console.log(user.name);
+    console.log(user.password);
+
+    if (!user.name || !user.password) {
+      alert("Please make sure everything is filled out correctly, thank you!")
+      return;
+    }
+
+    API.saveUser(user.username, user.name, user.password);
+
+    // $userName.val("");
+    // $userPassword.val("");
+  };
+
+  // handleDeleteBtnClick is called when an event's delete button is clicked
+  // Remove the event from the db and refresh the list
+
+
+  let handleEventBtnClick = function () {
+    let idToDelete = $(this)
+      .parent()
+      .attr("data-id")
+
+    API.deleteEvent(idToDelete).then(function () {
+      refreshEvent();
+    })
+  };
+
+  let deleteUserBtnClick = function () {
+    let idToDelete = $(this)
+      .parent()
+      .attr("data-id");
+
+    API.deleteUser(idToDelete).then(function () {
+      refreshUser();
+    })
   }
 
-  if (!(event.title && event.startTime && event.eventDate)) {
-    alert("Please make sure everything is filled out correctly, thank you!")
 
-  }
+  // Add event listeners to the submit and delete buttons
 
-  API.saveEvent(eventData).then(function () {
-    refreshEvent();
-  });
+  $eventSubmitButton.on("click", handleEventSubmit);
+  $eventList.on("click", ".delete", handleEventBtnClick)
 
+  $userSubmitButton.on("click", handleUserSubmit);
+  $userList.on("click", ".delete", deleteUserBtnClick)
 
-
-  $eventName.val("");
-  $eventStartTime.val("");
-  $eventDate.val("");
-  $eventDescription.val("");
-
-};
-
-//Handle User Submit
-
-let handleUserSubmit = function (event) {
-
-  event.preventDefault();
-
-  let user = {
-    username: $userEmail.val().trim(),
-    name: $userName.val().trim(),
-    password: $userPassword.val().trim()
-  }
-
-  console.log(user.name);
-  console.log(user.password);
-
-  if (!user.name || !user.password) {
-    alert("Please make sure everything is filled out correctly, thank you!")
-    return;
-  }
-
-  API.saveUser(user.username, user.name, user.password);
-
-  // $userName.val("");
-  // $userPassword.val("");
-};
-
-// handleDeleteBtnClick is called when an event's delete button is clicked
-// Remove the event from the db and refresh the list
-
-
-let handleEventBtnClick = function () {
-  let idToDelete = $(this)
-    .parent()
-    .attr("data-id")
-
-  API.deleteEvent(idToDelete).then(function () {
-    refreshEvent();
-  })
-};
-
-let deleteUserBtnClick = function () {
-  let idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteUser(idToDelete).then(function () {
-    refreshUser();
-  })
-}
-
-
-// Add event listeners to the submit and delete buttons
-
-$eventSubmitButton.on("click", handleEventSubmit);
-$eventList.on("click", ".delete", handleEventBtnClick)
-
-$userSubmitButton.on("click", handleUserSubmit);
-$userList.on("click", ".delete", deleteUserBtnClick)
-
-$loginButton.on("click", handleLogin);
+  $loginButton.on("click", handleLogin);
 
 });
