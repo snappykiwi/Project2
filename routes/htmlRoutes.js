@@ -1,5 +1,6 @@
 var db = require("../models");
 const middleware = require("../config/middleware/index");
+const Op = db.Sequelize.Op
 
 module.exports = function (app) {
   
@@ -48,7 +49,16 @@ module.exports = function (app) {
   
   app.get("/request", function(req, res) {
     let user = req.user;
-    res.render("request")
+    db.User.findAll({
+      where: {
+        id: {
+          [Op.not]: req.user.id
+        }
+      }
+    }).then(function (dbUsers) {
+
+      res.render("request", {users: dbUsers})
+    })
   });
 
 
