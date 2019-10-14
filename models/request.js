@@ -40,12 +40,22 @@ module.exports = function(sequelize, DataTypes) {
   Request.associate = function(models) {
     
     Request.belongsTo(models.User, {
-      foreignKey: {
-        allowNull: false
-      }
+      // as: 'Sender',
+      constraints: false
     });
 
-    Request.hasMany(models.Invite);
+    Request.belongsToMany(models.User, {
+      through: 'user_requests',
+      constraints: false
+    });
+
+    Request.hasMany(models.Invite, {
+      foreignKey: 'invitable_id',
+      constraints: false,
+      scope: {
+        invitable: 'request'
+      }
+    });
   };
 
   return Request
