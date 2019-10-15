@@ -101,29 +101,31 @@ module.exports = function (app) {
       res.json(dbUser);
     });
   });
-//Delete user by id
-app.delete("/api/users/:id", function (req, res) {
-  db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
-    res.json(dbUser);
+
+  //Delete user by id
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
   });
-});
 
 
-//REQUEST ROUTES
-app.post("/api/request", (req, res) => {
-  db.Request.create({
-    dateStart: req.body.dateStart,
-    dateEnd: req.body.dateEnd,
-    startTime: req.body.starTime,
-    endTime: req.body.endTime,
-    duration: req.body.duration,
-    reason: req.body.reason,
-    status: req.body.status,
-    UserId: req.user.id
+  //REQUEST ROUTES
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
 
-  }).then(function (dbRequest) {
-    console.log(dbRequest);
-    res.json(dbRequest);
+    }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
+    });
   });
 
 
@@ -145,75 +147,75 @@ app.post("/api/request", (req, res) => {
   });
 
 
-    //REQUEST ROUTES
-    app.post("/api/request", (req, res) => {
-      db.Request.create({
-        dateStart: req.body.dateStart,
-        dateEnd: req.body.dateEnd,
-        startTime: req.body.starTime,
-        endTime: req.body.endTime,
-        duration: req.body.duration,
-        reason: req.body.reason,
-        status: req.body.status,
-        UserId: req.user.id
+  //REQUEST ROUTES
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
 
-      }).then(function (dbRequest) {
-        console.log(dbRequest);
-        res.json(dbRequest);
-      });
+    }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
     });
+  });
 
 
 
-    //INVITE ROUTE
+  //INVITE ROUTE
 
-    app.get("/api/invite/:id", function (req, res) {
-      db.Invite.findOne({
-        where: {
-          id: req.params.id
-        },
-        include: [db.Event]
-      }).then(function (dbInvites) {
-        res.json(dbInvites);
-      });
+  app.get("/api/invite/:id", function (req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [db.Event]
+    }).then(function (dbInvites) {
+      res.json(dbInvites);
     });
+  });
 
-    app.get("/api/invite/:id", (req, res) => {
-      res.json([
-        {
-          name: "bob",
-          date: 1570817096319,
-          times: [
-            1570817044814, 1570817095477, 1570817096319
-          ],
-          reason: "code",
-          invite_id: "bskdfai032"
-        }
-      ]);
-    });
-
-    app.post("/api/invite", function (req, res) {
-      db.Invite.create({
+  app.get("/api/invite/:id", (req, res) => {
+    res.json([
+      {
+        name: "bob",
         date: 1570817096319,
-        startTime: 115520,
-        endTime: 152310,
-        status: "pending",
-        EventId: 1,
-        UserId: 1
-      })
-    });
+        times: [
+          1570817044814, 1570817095477, 1570817096319
+        ],
+        reason: "code",
+        invite_id: "bskdfai032"
+      }
+    ]);
+  });
 
-    //Edit event
-    app.put("/api/posts", function (req, res) {
-      db.Event.update(
-        req.body,
-        {
-          where: {
-            id: req.body.id
-          }
-        }).then(function (dbEvent) {
-          res.json(dbPost);
-        });
-    });
+  app.post("/api/invite", function (req, res) {
+    db.Invite.create({
+      date: 1570817096319,
+      startTime: 115520,
+      endTime: 152310,
+      status: "pending",
+      EventId: 1,
+      UserId: 1
+    })
+  });
 
-  };
+  //Edit event
+  app.put("/api/posts", function (req, res) {
+    db.Event.update(
+      req.body,
+      {
+        where: {
+          id: req.body.id
+        }
+      }).then(function (dbEvent) {
+        res.json(dbPost);
+      });
+  });
+
+};
