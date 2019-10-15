@@ -140,6 +140,18 @@ module.exports = function (app) {
 
 
   //INVITE ROUTE
+
+  app.get("/api/invite/:id", function(req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      }, 
+      include: [db.Event]
+    }).then(function(dbInvites) {
+      res.json(dbInvites);
+    });
+  });
+
   app.get("/api/invite/:id", (req, res) => {
     res.json([
       {
@@ -152,6 +164,17 @@ module.exports = function (app) {
         invite_id: "bskdfai032"
       }
     ]);
+  });
+
+  app.post("/api/invite", function(req, res) {
+    db.Invite.create({
+      date: 1570817096319,
+      startTime: 115520,
+      endTime: 152310,
+      status: "pending",
+      EventId: 1,
+      UserId: 1
+    })
   });
 
   //Edit event

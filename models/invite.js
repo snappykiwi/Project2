@@ -1,10 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
   let Invite = sequelize.define("Invite", {
-    uuid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV1,
-      primaryKey: true
-    },
+    // uuid: {
+    //   type: DataTypes.UUID,
+    //   defaultValue: DataTypes.UUIDV1,
+    //   primaryKey: true
+    // },
     date: {
       type: DataTypes.DATE,
       allowNull: false
@@ -39,20 +39,27 @@ module.exports = function(sequelize, DataTypes) {
 
   Invite.associate = function(models) {
     
-    Invite.belongsTo(models.Request, {
-      foreignKey: 'invitable_id',
-      constraints: false,
-      as: 'request'
-    });
+    // Invite.belongsTo(models.Request, {
+    //   foreignKey: 'invitable_id',
+    //   constraints: false,
+    //   as: 'request'
+    // });
     
     Invite.belongsTo(models.Event, {
-      foreignKey: 'invitable_id',
-      as: 'event'
+      foreignKey: {
+        allowNull: true,
+        // as: 'eventId'
+      }
     });
 
-    Invite.belongsTo(models.User, {
-      
+    Invite.belongsTo(models.Request, {
+      foreignKey: {
+        allowNull: true,
+        // as: 'eventId'
+      }
     });
+
+    Invite.belongsTo(models.User);
 
   };
 

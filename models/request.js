@@ -40,21 +40,19 @@ module.exports = function (sequelize, DataTypes) {
 
     Request.belongsTo(models.User, {
       // as: 'Sender',
-      constraints: false
+      // constraints: false
     });
 
-    Request.belongsToMany(models.User, {
-      through: 'user_requests',
-      constraints: false
-    });
+    Request.hasOne(models.Event)
 
-    Request.hasMany(models.Invite, {
-      foreignKey: 'invitable_id',
-      constraints: false,
-      scope: {
-        invitable: 'request'
-      }
-    });
+
+    // Request.hasMany(models.Invite, {
+    //   // foreignKey: 'invitable_id',
+    //   constraints: false,
+    //   scope: {
+    //     invitable: 'request'
+    //   }
+    // });
   };
 
   return Request
