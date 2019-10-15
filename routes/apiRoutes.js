@@ -101,6 +101,31 @@ module.exports = function (app) {
       res.json(dbUser);
     });
   });
+//Delete user by id
+app.delete("/api/users/:id", function (req, res) {
+  db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+    res.json(dbUser);
+  });
+});
+
+
+//REQUEST ROUTES
+app.post("/api/request", (req, res) => {
+  db.Request.create({
+    dateStart: req.body.dateStart,
+    dateEnd: req.body.dateEnd,
+    startTime: req.body.starTime,
+    endTime: req.body.endTime,
+    duration: req.body.duration,
+    reason: req.body.reason,
+    status: req.body.status,
+    UserId: req.user.id
+
+  }).then(function (dbRequest) {
+    console.log(dbRequest);
+    res.json(dbRequest);
+  });
+
 
   //add new user
   app.post("/api/users", function (req, res) {
