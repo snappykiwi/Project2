@@ -22,7 +22,19 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: "pending",
       allowNull: false
     }
-
+  }, {
+    scopes: {
+      pending: {
+        where: {
+          status: "pending"
+        }
+      },
+      accepted: {
+        where: {
+          status: "accepted"
+        }
+      },
+    }
   });
 
   Invite.associate = function(models) {
@@ -35,12 +47,11 @@ module.exports = function(sequelize, DataTypes) {
     
     Invite.belongsTo(models.Event, {
       foreignKey: 'invitable_id',
-      constraints: false,
       as: 'event'
     });
 
     Invite.belongsTo(models.User, {
-      constraints: false,
+      
     });
 
   };

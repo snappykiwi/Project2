@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   let Request = sequelize.define("Request", {
     uuid: {
       type: DataTypes.UUID,
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     startTime: {
-      type: DataTypes.TIME, 
+      type: DataTypes.TIME,
       allowNull: true
     },
     endTime: {
@@ -27,18 +27,17 @@ module.exports = function(sequelize, DataTypes) {
     },
     reason: {
       type: DataTypes.STRING,
-      len: [1,20]
+      len: [1, 20]
     },
     status: {
       type: DataTypes.STRING,
       defaultValue: "pending",
       allowNull: false
     }
-
   });
 
-  Request.associate = function(models) {
-    
+  Request.associate = function (models) {
+
     Request.belongsTo(models.User, {
       // as: 'Sender',
       constraints: false
