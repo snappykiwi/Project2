@@ -30,8 +30,10 @@ $(document).ready(function () {
         description: eventData.description
       })
         .then(function (data) {
-          window.location.replace("/");
+          console.log("success");
+          window.location.replace("/home");
           if(err) throw err;
+          refreshEvent();
         })      
     },
 
@@ -96,7 +98,7 @@ $(document).ready(function () {
 
   //refresh event
 
-  let refreshEvent = function () {
+  const refreshEvent = function () {
     API.getEvents().then(function (data) {
       let $events = data.map(function (event) {
         let $a = $("<a>")
@@ -127,7 +129,7 @@ $(document).ready(function () {
 
   //refresh User
 
-  let refreshUser = function () {
+  const refreshUser = function () {
 
     console.log("User Refresh Fired")
     API.getUser().then(function (data) {
@@ -157,7 +159,7 @@ $(document).ready(function () {
     });
   }
 
-  let handleLogin = function (event) {
+  const handleLogin = function (event) {
     event.preventDefault();
     let user = {
       username: $loginUser.val().trim(),
@@ -178,7 +180,7 @@ $(document).ready(function () {
   // handleFormSubmit is called whenever we submit a new event
   // Save the new event to the db and refresh the list
 
-  let handleEventSubmit = function (event) {
+  const handleEventSubmit = function (event) {
     event.preventDefault();
     console.log("Event Submit Button Clicked!")
     let eventData = {
@@ -195,7 +197,7 @@ $(document).ready(function () {
     }
 
     API.saveEvent(eventData);
-    // refreshEvent();
+   
 
 
 
@@ -209,7 +211,7 @@ $(document).ready(function () {
 
   //Handle User Submit
 
-  let handleUserSubmit = function (event) {
+  const handleUserSubmit = function (event) {
 
     event.preventDefault();
 
@@ -267,5 +269,7 @@ $(document).ready(function () {
   $userList.on("click", ".delete", deleteUserBtnClick)
 
   $loginButton.on("click", handleLogin);
+
+  refreshEvent();
 
 });
