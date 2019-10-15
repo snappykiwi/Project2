@@ -92,6 +92,9 @@ $(document).ready(function () {
     }
   };
 
+  $('button#invite').on("click", function(event) {
+    $.post("api/invite");
+  });
 
   //refresh event
 

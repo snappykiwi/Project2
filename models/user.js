@@ -36,11 +36,13 @@ module.exports = function (sequelize, DataTypes) {
 
     User.hasMany(models.Request);
 
-    User.belongsToMany(models.Request, {through: 'user_requests', constraints: false});
+    User.hasMany(models.Invite);
 
-    User.belongsToMany(models.Event, { as: 'attender', through: 'user_events', constraints: false});
+    // User.belongsToMany(models.Request, {through: 'user_requests'});
 
-    User.belongsToMany(models.Invite, {through: 'user_invites'});
+    // User.belongsToMany(models.Event, {through: 'user_events'});
+
+    // User.belongsToMany(models.Invite, {through: 'user_invites'});
 
   };
 

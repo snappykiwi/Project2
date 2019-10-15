@@ -1,10 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
   let Invite = sequelize.define("Invite", {
-    uuid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV1,
-      primaryKey: true
-    },
+    // uuid: {
+    //   type: DataTypes.UUID,
+    //   defaultValue: DataTypes.UUIDV1,
+    //   primaryKey: true
+    // },
     date: {
       type: DataTypes.DATE,
       allowNull: false
@@ -22,26 +22,44 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: "pending",
       allowNull: false
     }
-
+  }, {
+    scopes: {
+      pending: {
+        where: {
+          status: "pending"
+        }
+      },
+      accepted: {
+        where: {
+          status: "accepted"
+        }
+      },
+    }
   });
 
   Invite.associate = function(models) {
     
-    Invite.belongsTo(models.Request, {
-      foreignKey: 'invitable_id',
-      constraints: false,
-      as: 'request'
-    });
+    // Invite.belongsTo(models.Request, {
+    //   foreignKey: 'invitable_id',
+    //   constraints: false,
+    //   as: 'request'
+    // });
     
     Invite.belongsTo(models.Event, {
-      foreignKey: 'invitable_id',
-      constraints: false,
-      as: 'event'
+      foreignKey: {
+        allowNull: true,
+        // as: 'eventId'
+      }
     });
 
-    Invite.belongsTo(models.User, {
-      constraints: false,
+    Invite.belongsTo(models.Request, {
+      foreignKey: {
+        allowNull: true,
+        // as: 'eventId'
+      }
     });
+
+    Invite.belongsTo(models.User);
 
   };
 
