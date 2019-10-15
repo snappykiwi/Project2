@@ -55,7 +55,7 @@ module.exports = function (app) {
 
   // EVENT API ROUTES 
   //get all events
-  app.get("/api/events/", function (req, res) {
+  app.get("/api/events", function (req, res) {
     db.Event.findAll({}).then(function (dbEvent) {
 
       res.json(dbEvent);
