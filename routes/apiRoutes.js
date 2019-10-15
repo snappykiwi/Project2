@@ -6,9 +6,11 @@ module.exports = function (app) {
   // AUTH API ROUTES
 
   app.post('/api/login',
-    passport.authenticate("local", { successRedirect: '/home',
-    failureRedirect: '/login',
-    failureFlash: true }), 
+    passport.authenticate("local", {
+      successRedirect: '/home',
+      failureRedirect: '/login',
+      failureFlash: true
+    }),
     function (req, res) {
       console.log(req.user);
       res.json(req.user);
@@ -53,7 +55,7 @@ module.exports = function (app) {
 
   // EVENT API ROUTES 
   //get all events
-  app.get("/api/events", function (req, res) {
+  app.get("/api/events/", function (req, res) {
     db.Event.findAll({}).then(function (dbEvent) {
 
       res.json(dbEvent);
@@ -72,17 +74,15 @@ module.exports = function (app) {
       description: req.body.description,
       UserId: req.user.id
     })
-      .then(function () {
-        console.log("success");
-        // res.redirect(307, "/")
+      .then(function (result) {
+        console.log("sent data to db")
+        res.json(result);
       })
       .catch(function (err) {
         console.log("failed")
         console.log(err);
-
         res.status(err).json(err);
       })
-    // res.json(res);
   });
 
 
@@ -101,6 +101,33 @@ module.exports = function (app) {
       res.json(dbUser);
     });
   });
+
+  //Delete user by id
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+
+  //REQUEST ROUTES
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
+
+    }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
+    });
+  });
+
 
   //add new user
   app.post("/api/users", function (req, res) {
@@ -131,15 +158,28 @@ module.exports = function (app) {
       reason: req.body.reason,
       status: req.body.status,
       UserId: req.user.id
-      
-      }).then(function (dbRequest) {
+
+    }).then(function (dbRequest) {
       console.log(dbRequest);
       res.json(dbRequest);
     });
   });
 
 
+
   //INVITE ROUTE
+
+  app.get("/api/invite/:id", function (req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [db.Event]
+    }).then(function (dbInvites) {
+      res.json(dbInvites);
+    });
+  });
+
   app.get("/api/invite/:id", (req, res) => {
     res.json([
       {
@@ -152,6 +192,17 @@ module.exports = function (app) {
         invite_id: "bskdfai032"
       }
     ]);
+  });
+
+  app.post("/api/invite", function (req, res) {
+    db.Invite.create({
+      date: 1570817096319,
+      startTime: 115520,
+      endTime: 152310,
+      status: "pending",
+      EventId: 1,
+      UserId: 1
+    })
   });
 
   //Edit event
