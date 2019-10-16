@@ -15,8 +15,8 @@ div.home-page {
 
 div.img-bg {
     background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") left fixed no-repeat;
-    background-size: 38em;
-    height: 100vh
+    background-size: 42em;
+    height: 100vh;
 }
 
 div.login-half {
@@ -81,4 +81,8 @@ span#loginLink, span#signUpLink {
 
 div.signUpDiv {
     display: none;
+}
+
+div#dncalendar-prev-month i#prev-month{
+    color: #ffffff;
 }
