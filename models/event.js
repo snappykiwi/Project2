@@ -1,5 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
   let Event = sequelize.define("Event", {
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV1,
+      primaryKey: true
+    },
     eventTitle : {
       type: DataTypes.STRING,
       allowNull: false,
