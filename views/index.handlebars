@@ -12,56 +12,83 @@
 
         <h1 class="site-title"><i class="medium material-icons prefix">schedule</i>Bay Calendars</h1>
 
-        <h2 class="login-header">Login</h2>
+        <div class="loginDiv">
 
-        <div class="input-field col s12 ">
+          <h2 class="login-header">Login</h2>
 
-          <i class="material-icons prefix">account_circle</i>
-          <input id="loginEmail" type="email">
-          <label for="loginEmail">Email</label>
+          <div class="input-field col s12 ">
+
+            <i class="material-icons prefix">account_circle</i>
+            <input id="loginEmail" type="email">
+            <label for="loginEmail">Email</label>
+
+          </div>
+
+          <div class="input-field col s12">
+
+            <i class="material-icons prefix">vpn_key</i>
+            <input id="loginPassword" type="password">
+            <label for="loginPassword">Password</label>
+            <small id="emailHelp" class="form-text">Don't have an account? <span id="signUpLink" class="signUpLink">Sign
+                up</span> here!</small>
+
+          </div>
+
+          <button id="login" type="button" class="btn waves-effect">Sign In</button>
 
         </div>
 
-        <div class="input-field col s12">
 
-          <i class="material-icons prefix">vpn_key</i>
-          <input id="loginPassword" type="password">
-          <label for="loginPassword">Password</label>
-          <small id="emailHelp" class="form-text">Don't have an account? <a class="signUpLink" href="/adduser">Sign up</a> here!</small>
+        <div class="signUpDiv">
+
+          <div class="row">
+            <h2 class="signUpAddUser col s12 center">Sign up</h1>
+          </div>
+
+          <div class="row">
+            
+            <form class="formAddUser col s12">
+
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">email</i>
+                <label for="email">Email address</label>
+                <input type="email" id="email">
+              </div>
+
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">account_circle</i>
+                <label for="name">Name</label>
+                <input type="text" id="name">
+              </div>
+
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">vpn_key</i>
+                <label for="passwordOne">Password</label>
+                <input type="password" id="passwordOne" >
+              </div>
+
+              <div class="col s12 input-field">
+                <i class="material-icons prefix">vpn_key</i>
+                <label for="passwordTwo">Re-Enter Password</label>
+                <input type="password" id="passwordTwo" >
+
+                <small id="emailHelp" class="form-text">Already have an account? <span id="loginLink"
+                    class="loginLink">Login</span> here!</small>
+              </div>
+
+
+              <div class="col s12 m6 offset-m3">
+                <button id="user-submit" type="button" class="btn">Sign Up</button>
+              </div>
+
+            </form>
+
+          </div>
 
         </div>
 
-        <button id="login" type="button" class="btn waves-effect">Sign In</button>
 
       </div>
     </div>
 
   </div>
-
-
-
-
-
-  {{!-- 
-  <title>Home</title>
-  <h1 class="titleHomePage">Bay Calendars</h1>
-  <br> --}}
-  {{!-- <img class="img"
-    src="https://lh3.googleusercontent.com/nsl-MtseNHvoGGV3Q1XGYjHvt4-yeMWi0ai2BltsosXPkLujQfaEe1e8Yg8N1lw-SOtQOkf26No=w640-h400-e365"
-    alt="sample" width="600px" height="300px"> --}}
-  {{!-- <form class="logInHomePage">
-    <h2 class="signUpHomePage">Log In</h2>
-    <div class="col s12 col m12 col l12">
-      <label for="loginEmail">Email address</label>
-      <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email">
-      <small id="emailHelp" class="form-text">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="col s12 col m12 col l12">
-      <label for="loginPassword">Password</label>
-      <input type="password" class="form-control" id="loginPassword" placeholder="Password">
-      <small id="emailHelp" class="form-text">Don't have an account? <a href="/adduser">Sign up</a> here!</small>
-    </div>
-    </div>
-    <button id="login" type="button" class="btn btn-primary">Submit</button>
-  </form>
-</body>  --}}

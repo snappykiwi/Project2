@@ -19,10 +19,9 @@ module.exports = function (app) {
           events: dbEvents
         });
       });
-
     }
-  });
 
+  });
 
   //user homepage
   app.get("/home", function (req, res) {
@@ -36,8 +35,7 @@ module.exports = function (app) {
         userEvents: dbUserEvents
       })
     })
-  })
-
+  });
 
   //create event page
   app.get("/addevent", middleware.isLoggedIn, function (req, res) {
@@ -55,16 +53,15 @@ module.exports = function (app) {
     });
   });
 
-
   //register user page
-  app.get("/adduser", function (req, res) {
-    db.User.findAll({}).then(function (dbUsers) {
-      res.render("addUser", {
-        msg: "Add User",
-        user: dbUsers
-      });
-    });
-  });
+  // app.get("/adduser", function (req, res) {
+  //   db.User.findAll({}).then(function (dbUsers) {
+  //     res.render("addUser", {
+  //       msg: "Add User",
+  //       user: dbUsers
+  //     });
+  //   });
+  // });
 
   // Create request page
   app.get("/request", middleware.isLoggedIn, function(req, res) {
@@ -81,7 +78,6 @@ module.exports = function (app) {
     })
   });
 
-
   //load event page and pass in an event by id
   app.get("/events/:id", function (req, res) {
     db.Event.findOne({ where: { id: req.params.id } }).then(function (dbEvent) {
@@ -91,36 +87,24 @@ module.exports = function (app) {
     });
   });
 
-
-  app.get("/inbox", (req, res) => {
-    const user = req.user;
-  //   db.Invite.findAll({
-  //     where : {
-  //       userId: user.id
-  //     },
-  //     include: [db.Event]
-  //   }).then(function(invites) {
-  //     res.render("inbox", {
-  //       invites: invites
-  //     });
-  //   });
-  // });
-    // use user.uid to make a sequelize query for invites
-    res.render("inbox", {
-      invites: [{
-        owner: "bob",
-        eventTitle: "coding",
-        startTime: 1570817096319,
-        endTime: 1570817096319,
-        eventDate: 1570817096319,
-        reason: "code",
-        invite_id: "bskdfai032",
-        userId: "fasdfasdf32",
-        eventId: "dfa32rdf"
+  app.get("/invite/:id", function (req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [{
+        model : db.Event,
+        include : [db.User]
+      }, {
+        model : db.User
+      }, {
+        model : db.Request,
+        include : [db.User]
       }]
-    })
-  })
-
+    }).then(function (dbInvites) {
+      res.json(dbInvites);
+    });
+  });
   
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {

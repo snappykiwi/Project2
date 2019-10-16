@@ -199,13 +199,13 @@ module.exports = function (app) {
 
   app.post("/api/invite", function (req, res) {
     db.Invite.create({
-      date: 1570817096319,
-      startTime: 115520,
-      endTime: 152310,
-      status: "pending",
-      EventId: 1,
-      UserId: 1
-    })
+      date: req.body.date,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      status: req.body.status,
+    }).then(function (data) {
+      console.log(data);
+    });
   });
 
   //Edit event

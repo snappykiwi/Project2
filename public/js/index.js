@@ -17,6 +17,11 @@ $(document).ready(function () {
   let $loginUser = $("#loginEmail");
   let $loginPass = $("#loginPassword");
   let $userPassword = $("#passwordOne");
+  let $userPasswordCheck = $("#passwordTwo");
+  let $signUpLink = $("span#signUpLink");
+  let $loginLink = $("span#loginLink");
+  let $signUpDiv = $("div.signUpDiv");
+  let $loginDiv = $("div.loginDiv");
 
   // The API object contains methods for each kind of request we'll make
   let API = {
@@ -259,6 +264,20 @@ $(document).ready(function () {
     })
   }
 
+
+  $signUpLink.on("click", function(event) {
+    $loginDiv.fadeOut("slow");
+    setTimeout(function() {
+      $signUpDiv.fadeIn("slow");
+    }, 700)
+  });
+
+  $loginLink.on("click", function(event) {
+    $signUpDiv.fadeOut("slow");
+    setTimeout(function() {
+      $loginDiv.fadeIn("slow");
+    }, 700)
+  });
 
   // Add event listeners to the submit and delete buttons
 
