@@ -5,21 +5,21 @@ $(document).ready(function() {
 
     createInvite: function(eventData) {
       console.log(eventData)
+
       $.post("api/invite", {
         date: eventData.eventDate,
         startTime: eventData.startTime,
         endTime: eventData.endTime,
         eventId: eventData.uuid
       }).then((response) => {
+
         console.log(response);
+
       }, (error) => {
+
         console.log(error);
+
       });
-        
-      //   function(data, err) {
-      //   if (err) throw err;
-      //   console.log(data);
-      // })
     }
 
   }

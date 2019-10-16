@@ -15,6 +15,7 @@ module.exports = function (app) {
         },
         include: [db.User]
       }).then(function (dbEvents) {
+        console.log(dbEvents);
         res.render("userHome", {
           events: dbEvents
         });
@@ -30,6 +31,7 @@ module.exports = function (app) {
         UserId: req.user.id
       }
     }).then(function (dbUserEvents) {
+      console.log(dbUserEvents);
       res.render("userHome", {
         msg: "Welcome Back",
         userEvents: dbUserEvents
