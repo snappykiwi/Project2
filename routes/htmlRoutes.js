@@ -3,9 +3,9 @@ const middleware = require("../config/middleware/index");
 const Op = db.Sequelize.Op
 
 module.exports = function (app) {
-  
+
   app.get("/", function (req, res) {
-    if(!req.user) {
+    if (!req.user) {
       res.render("index")
     }
     else {
@@ -13,7 +13,7 @@ module.exports = function (app) {
         where: {
           UserId: req.user.id
         },
-        include: [ db.User ]
+        include: [db.User]
       }).then(function (dbEvents) {
         res.render("userHome", {
           events: dbEvents
@@ -24,10 +24,7 @@ module.exports = function (app) {
   });
 
   //user homepage
-  app.get("/home", function (req, res) {
-    if(!req.user) {
-      res.render("index")
-    }
+  app.get("/home", middleware.isLoggedIn, function (req, res) {
     db.Event.findAll({
       where: {
         UserId: req.user.id
@@ -44,7 +41,7 @@ module.exports = function (app) {
   app.get("/addevent", middleware.isLoggedIn, function (req, res) {
     db.Event.findAll({
       where: {
-        UserId: req.user.id, 
+        UserId: req.user.id,
 
       }
     }).then(function (dbEvents) {
@@ -67,7 +64,7 @@ module.exports = function (app) {
   // });
 
   // Create request page
-  app.get("/request", middleware.isLoggedIn, function(req, res) {
+  app.get("/request", middleware.isLoggedIn, function (req, res) {
     let user = req.user;
     db.User.findAll({
       where: {
@@ -77,13 +74,17 @@ module.exports = function (app) {
       }
     }).then(function (dbUsers) {
 
-      res.render("request", {users: dbUsers})
+      res.render("request", { users: dbUsers })
     })
   });
 
   //load event page and pass in an event by id
   app.get("/events/:id", function (req, res) {
-    db.Event.findOne({ where: { id: req.params.id } }).then(function (dbEvent) {
+    db.Event.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    }).then(function (dbEvent) {
       res.render("event", {
         event: dbEvent
       });
@@ -96,19 +97,19 @@ module.exports = function (app) {
         id: req.params.id
       },
       include: [{
-        model : db.Event,
-        include : [db.User]
+        model: db.Event,
+        include: [db.User]
       }, {
-        model : db.User
+        model: db.User
       }, {
-        model : db.Request,
-        include : [db.User]
+        model: db.Request,
+        include: [db.User]
       }]
     }).then(function (dbInvites) {
       res.json(dbInvites);
     });
   });
-  
+
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");

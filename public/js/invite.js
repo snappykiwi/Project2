@@ -9,7 +9,7 @@ $(document).ready(function() {
         date: eventData.eventDate,
         startTime: eventData.startTime,
         endTime: eventData.endTime,
-        eventId: eventData.id
+        eventId: eventData.uuid
       }).then((response) => {
         console.log(response);
       }, (error) => {
@@ -29,9 +29,9 @@ $(document).ready(function() {
     let eventId = $(this).val();
 
     $.get(`api/events/${eventId}`).then(function(response) {
-      console.log(response);
+      console.log(response[0]);
 
-      API.createInvite(response);
+      API.createInvite(response[0]);
 
     });
   });
