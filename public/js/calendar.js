@@ -19,11 +19,16 @@ $(document).ready(function () {
   //   }
   // });
 
+  console.log(window.location.href);
+  console.log(window.location.href.split("/"));
+  
+  if (window.location.href.split("/").includes("home")) {
+
   $.get({
     url: "/api/events/",
     success: function (res) {
       console.log(res);
-      // console.log(res[0].eventDate);
+      // console.log(res.forEach());
 
       let my_calendar = $("#dncalendar-container").dnCalendar({
         dataTitles: { defaultDate: 'default', today: 'Today' },
@@ -56,6 +61,8 @@ $(document).ready(function () {
     }
 
   });
+
+}
 
   // my_calendar.build();
 
