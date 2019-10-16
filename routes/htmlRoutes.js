@@ -5,29 +5,49 @@ const Op = db.Sequelize.Op
 module.exports = function (app) {
   
   app.get("/", function (req, res) {
-    db.Event.findAll({}).then(function (dbEvent) {
-      res.render("index", {
-        msg: "The Home Page!",
-        events: dbEvent
+    if(!req.user) {
+      res.render("index")
+    }
+    else {
+      db.Event.findAll({
+        where: {
+          UserId: req.user.id
+        },
+        include: [ db.User ]
+      }).then(function (dbEvents) {
+        res.render("userHome", {
+          events: dbEvents
+        });
       });
-    });
+
+    }
   });
 
 
   //user homepage
   app.get("/home", function (req, res) {
-    db.Event.findAll({}).then(function (dbResponse) {
+    db.Event.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function (dbUserEvents) {
       res.render("userHome", {
         msg: "Welcome Back",
-        homepage: dbResponse
+        userEvents: dbUserEvents
       })
     })
   })
 
 
-  //add event
+  //create event page
   app.get("/addevent", middleware.isLoggedIn, function (req, res) {
-    db.Event.findAll({}).then(function (dbEvents) {
+    db.Event.findAll({
+      where: {
+        UserId: req.user.id, 
+
+      }
+    }).then(function (dbEvents) {
+      console.log(dbEvents);
       res.render("addEvent", {
         msg: "Welcome!",
         events: dbEvents
@@ -36,7 +56,7 @@ module.exports = function (app) {
   });
 
 
-  //add user
+  //register user page
   app.get("/adduser", function (req, res) {
     db.User.findAll({}).then(function (dbUsers) {
       res.render("addUser", {
@@ -46,8 +66,8 @@ module.exports = function (app) {
     });
   });
 
-  
-  app.get("/request", function(req, res) {
+  // Create request page
+  app.get("/request", middleware.isLoggedIn, function(req, res) {
     let user = req.user;
     db.User.findAll({
       where: {

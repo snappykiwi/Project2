@@ -21,32 +21,25 @@ module.exports = function (sequelize, DataTypes) {
     },
     description: {
       type: DataTypes.TEXT,
-    },
-    attendee: {
-      type: DataTypes.STRING
-    },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull:false
     }
   });
 
-  // Event.associate = function(models) {
-
-  //   Event.hasMany(models.Invite, {
-
-  //   });
-
-  // };
-
   Event.associate = function(models) {
-    Event.belongsTo(models.User, {
-      foreignKey: {
-        allowNull: false
-      }
+
+    // Event.belongsToMany(models.User, {through: 'user_events', constraints: false});
+    Event.belongsTo(models.User);
+
+    Event.belongsTo(models.Request);
+
+    Event.hasMany(models.Invite, {
+      // foreignKey: 'invitable_id',
+      // constraints: false,
+      // scope: {
+      //   invitable: 'event'
+      // }
     });
   }
-  
+
   return Event;
 
 };

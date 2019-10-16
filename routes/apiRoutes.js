@@ -55,10 +55,13 @@ module.exports = function (app) {
 
   // EVENT API ROUTES 
   //get all events
-  app.get("/api/events/:id", function (req, res) {
-    db.Event.findAll({ where: { UserId: req.params.id } }).then(function (dbEvent) {
-      console.log(req.params)
-      console.log(dbEvent);
+  app.get("/api/events", function (req, res) {
+    db.Event.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function (dbEvent) {
+
       res.json(dbEvent);
     });
   });
@@ -87,7 +90,6 @@ module.exports = function (app) {
   });
 
 
-
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
     db.Event.destroy({ where: { id: req.params.id } }).then(function (dbEvent) {
@@ -102,6 +104,33 @@ module.exports = function (app) {
       res.json(dbUser);
     });
   });
+
+  //Delete user by id
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+
+  //REQUEST ROUTES
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
+
+    }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
+    });
+  });
+
 
   //add new user
   app.post("/api/users", function (req, res) {
@@ -140,7 +169,20 @@ module.exports = function (app) {
   });
 
 
+
   //INVITE ROUTE
+
+  app.get("/api/invite/:id", function (req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [db.Event]
+    }).then(function (dbInvites) {
+      res.json(dbInvites);
+    });
+  });
+
   app.get("/api/invite/:id", (req, res) => {
     res.json([
       {
@@ -153,6 +195,17 @@ module.exports = function (app) {
         invite_id: "bskdfai032"
       }
     ]);
+  });
+
+  app.post("/api/invite", function (req, res) {
+    db.Invite.create({
+      date: 1570817096319,
+      startTime: 115520,
+      endTime: 152310,
+      status: "pending",
+      EventId: 1,
+      UserId: 1
+    })
   });
 
   //Edit event

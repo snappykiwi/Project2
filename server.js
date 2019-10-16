@@ -13,7 +13,7 @@ const express     = require("express"),
 
 
 //requiring routes
- db = require("./models");
+const db = require("./models");
 
 let app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,10 +63,10 @@ const mailOptions = {
   html: "<b>test</b>"
 };
 
-smtpTransport.sendMail(mailOptions, (error, response) => {
-  error ? console.log(error) : console.log(response);
-  smtpTransport.close();
-})
+// smtpTransport.sendMail(mailOptions, (error, response) => {
+//   error ? console.log(error) : console.log(response);
+//   smtpTransport.close();
+// })
 
 // Handlebars
 app.engine(
