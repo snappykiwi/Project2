@@ -69,7 +69,7 @@ module.exports = function (app) {
   app.get("/api/events/:id", function (req, res) {
     db.Event.findOne({
       where: {
-        id: req.params.id
+        uuid: req.params.id
       }
     }).then(function (dbEvent) {
 
@@ -104,7 +104,7 @@ module.exports = function (app) {
 
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
-    db.Event.destroy({ where: { id: req.params.id } }).then(function (dbEvent) {
+    db.Event.destroy({ where: { uuid: req.params.id } }).then(function (dbEvent) {
       res.json(dbEvent);
     });
   });
@@ -199,7 +199,7 @@ module.exports = function (app) {
     if(req.params.eventId) {
       db.Invite.findAll({
         where: {
-          EventId: req.params.eventId,
+          EventUuid: req.params.eventId,
           UserId: req.params.userId
         }
       })
@@ -235,7 +235,7 @@ module.exports = function (app) {
       startTime: req.body.startTime,
       endTime: req.body.endTime,
       status: "pending",
-      EventId: req.body.eventId,
+      EventUuid: req.body.eventId,
       UserId: req.user.id
     }).then(function (data) {
       console.log(data);
