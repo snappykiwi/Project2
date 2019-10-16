@@ -31,10 +31,10 @@ function sendEmail() {
   
   const mailOptions = {
     from: "schedulingapp742@gmail.com",
-    to: "schedulingapp742@gmail.com",
-    subject: "This is a test Email with OAuth",
+    to: ``,
+    subject: ``,
     generateTextFromHTML: true,
-    html: "<b>test</b>"
+    html: `<b>Hey! If you're interested in coming to this event, click this link.</b>`
   };
   
   smtpTransport.sendMail(mailOptions, (error, response) => {

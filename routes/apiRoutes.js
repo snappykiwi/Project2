@@ -1,5 +1,6 @@
 const db = require("../models");
 const passport = require("passport");
+const email = require("../email.js");
 
 module.exports = function (app) {
 
@@ -77,7 +78,6 @@ module.exports = function (app) {
     });
   });
 
-
   //create new event
   app.post("/api/events", function (req, res) {
 
@@ -99,8 +99,6 @@ module.exports = function (app) {
         res.status(err).json(err);
       })
   });
-
-
 
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
@@ -124,7 +122,6 @@ module.exports = function (app) {
     });
   });
 
-
   //REQUEST ROUTES
   app.post("/api/request", (req, res) => {
     db.Request.create({
@@ -142,7 +139,6 @@ module.exports = function (app) {
       res.json(dbRequest);
     });
   });
-
 
   //add new user
   app.post("/api/users", function (req, res) {
@@ -161,7 +157,6 @@ module.exports = function (app) {
     });
   });
 
-
   //REQUEST ROUTES
   app.post("/api/request", (req, res) => {
     db.Request.create({
@@ -179,8 +174,6 @@ module.exports = function (app) {
       res.json(dbRequest);
     });
   });
-
-
 
   //INVITE ROUTE
 
@@ -215,31 +208,22 @@ module.exports = function (app) {
     }
   });
 
-  app.get("/api/invite/:id", (req, res) => {
-    res.json([
-      {
-        name: "bob",
-        date: 1570817096319,
-        times: [
-          1570817044814, 1570817095477, 1570817096319
-        ],
-        reason: "code",
-        invite_id: "bskdfai032"
-      }
-    ]);
-  });
-
-  app.post("/api/invite", function (req, res) {
-    db.Invite.create({
+  app.post("/api/invite", async function (req, res) {
+      let user = await db.Invite.create({
       date: req.body.date,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
       status: "pending",
       EventUuid: req.body.eventId,
       UserId: req.user.id
-    }).then(function (data) {
-      console.log(data);
-    });
+    })
+    // .then(function (data) {
+    //   console.log(data);
+    // });
+    // db.findOne(where: User)
+    let userEmail = await db.findOne({where: {UserId: User.UserId}});
+    userEmail.username;
+
   });
 
   app.put("/api/invite/:id", function (req, res) {
