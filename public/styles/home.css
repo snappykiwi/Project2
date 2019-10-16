@@ -1,9 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Satisfy&display=swap');
 
+html {
+    height: 100%;
+    background-color: #282828;
+}
+
 body {
     color: #116466;
     font-family: 'Advent Pro', sans-serif;
 }
+
+body#home {
+    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") repeat-y;
+    background-size: 50% auto;
+    height: 100%;
+}
+
 
 h1.site-title {
     font-family: 'Satisfy', cursive;
@@ -12,12 +24,12 @@ h1.site-title {
 div.home-page {
     height: 100%;
 }
-
+/* 
 div.img-bg {
-    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") left fixed no-repeat;
-    background-size: 42em;
-    height: 100vh;
-}
+    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") repeat-y;
+    background-size: 100% auto;
+    height: 100%;
+} */
 
 div.login-half {
     background-color: #282828;
