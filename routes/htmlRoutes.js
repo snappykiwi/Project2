@@ -93,7 +93,28 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/invite/:id", function (req, res) {
+  app.get("/inbox", middleware.isLoggedIn, function(req, res) {
+    db.Invite.findAll({
+      where: {
+        UserId: req.user.id
+      }, 
+      include: [{
+        model: db.Event,
+        include: [db.User]
+      }, {
+        model: db.User
+      }, {
+        model: db.Request,
+        include: [db.User]
+      }]
+    }).then(function (dbInvites) {
+      res.render("inbox", {
+        invites: dbInvites
+      });
+    }).catch(console.log("Error!"))
+  })
+
+  app.get("/invite/:id?", function (req, res) {
     db.Invite.findOne({
       where: {
         id: req.params.id
