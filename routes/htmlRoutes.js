@@ -20,7 +20,7 @@ module.exports = function (app) {
         });
       });
     }
-    
+
   });
 
   //user homepage
@@ -54,14 +54,14 @@ module.exports = function (app) {
   });
 
   //register user page
-  app.get("/adduser", function (req, res) {
-    db.User.findAll({}).then(function (dbUsers) {
-      res.render("addUser", {
-        msg: "Add User",
-        user: dbUsers
-      });
-    });
-  });
+  // app.get("/adduser", function (req, res) {
+  //   db.User.findAll({}).then(function (dbUsers) {
+  //     res.render("addUser", {
+  //       msg: "Add User",
+  //       user: dbUsers
+  //     });
+  //   });
+  // });
 
   // Create request page
   app.get("/request", middleware.isLoggedIn, function(req, res) {

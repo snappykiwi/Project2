@@ -32,8 +32,9 @@ i.material-icons {
     margin-right: .25em;
 }
 
-input#loginPassword, input#loginEmail {
-    color: #ffffff;
+
+input {
+    color: #A8C6C7;
 }
 
 
@@ -44,10 +45,15 @@ div.input-field input#loginEmail:focus+label, div.input-field input#loginPasswor
 }
 
 /* label underline focus color */
-div.input-field input#loginEmail:focus, div.input-field input#loginPassword:focus {
+div.input-field input#loginEmail:focus, 
+div.input-field input#loginPassword:focus, 
+div.input-field input#email:focus, 
+div.input-field input#name:focus, 
+div.input-field input#passwordOne:focus, 
+div.input-field input#passwordTwo:focus {
 
     border-bottom: 1px solid #BEA177;
-    box-shadow: 0 1px 0 0 #BEA177;
+    box-shadow: 0 1px 0 0 #A67F44;
 
 }
 
@@ -68,6 +74,11 @@ button.btn:hover {
     background-color: #0c4546;
 }
 
-a.signUpLink {
+span#loginLink, span#signUpLink {
+    cursor: pointer;
     color:  #A67F44;
+}
+
+div.signUpDiv {
+    display: none;
 }
