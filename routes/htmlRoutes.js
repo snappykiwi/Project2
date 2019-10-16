@@ -25,6 +25,9 @@ module.exports = function (app) {
 
   //user homepage
   app.get("/home", function (req, res) {
+    if(!req.user) {
+      res.render("index")
+    }
     db.Event.findAll({
       where: {
         UserId: req.user.id

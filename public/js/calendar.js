@@ -28,22 +28,17 @@ $(document).ready(function () {
     url: "/api/events/",
     success: function (res) {
       console.log(res);
+      let notesArr = [];
       res.forEach((el) => {
         console.log(el.eventDate);
-        let allEventDates = el.eventDate;
-        let convertedDates = moment(allEventDates).format("YYYY-MM-DD");
-        let allEventTitles = [el.eventTitle];
-        return convertedDates, allEventTitles;
+        let eventDate = moment(allEventDates).format("YYYY-MM-DD");
+        let eventTitle = [el.eventTitle];
+        notesArray.push({"date": res.length ? eventDate : "", "note": res.length ? eventTitle : []});
       });
 
       let my_calendar = $("#dncalendar-container").dnCalendar({
         dataTitles: { defaultDate: 'default', today: 'Today' },
-        notes: [
-          {
-            "date": res.length ? moment(res[0].eventDate).format("YYYY-MM-DD") : "",
-            "note": res.length ? [(res[0].eventTitle)] : []
-          }
-        ],
+        notes: notesArr,
         showNotes: true,
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
         monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
