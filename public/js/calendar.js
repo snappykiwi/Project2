@@ -1,26 +1,62 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    let my_calendar = $("#dncalendar-container").dnCalendar({
-        dataTitles: { defaultDate: 'default', today : 'Today' },
+  // let my_calendar = $("#dncalendar-container").dnCalendar({
+  //   dataTitles: { defaultDate: 'default', today: 'Today' },
+  //   notes: [
+  //     { "date": "2019-10-31", "note": ["Happy Halloween 2019"] }
+  //   ],
+  //   showNotes: true,
+  //   monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  //   monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+  //   dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  //   dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  //   dayUseShortName: false,
+  //   monthUseShortName: false,
+  //   showNotes: true,
+  //   startWeek: 'sunday',
+  //   dayClick: function (date, view) {
+  //     console.log("HELLOOOOO");
+  //   }
+  // });
+
+  $.get({
+    url: "/api/events/",
+    success: function (res) {
+      console.log(res);
+      // console.log(res[0].eventDate);
+
+      let my_calendar = $("#dncalendar-container").dnCalendar({
+        dataTitles: { defaultDate: 'default', today: 'Today' },
         notes: [
-          { "date": "2019-10-31", "note": ["Happy Halloween 2019"] }
-          ],
+          {
+            "date": res.length ? moment(res[0].eventDate).format("YYYY-MM-DD") : "",
+            "note": res.length ? [(res[0].eventTitle)] : []
+          }
+        ],
         showNotes: true,
-        monthNames: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ], 
-        monthNamesShort: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec' ],
-        dayNames: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        dayNamesShort: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
+        monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+        dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         dayUseShortName: false,
         monthUseShortName: false,
         showNotes: false,
         startWeek: 'sunday',
-        dayClick: function(date, view) {
-            console.log(date);
-            console.log(view);
-            console.log("HELLOOOOO");
-          }
-    });
+        dayClick: function (date, view) {
+          console.log("HELLOOOOO");
+        }
+      });
     
-    my_calendar.build();
-    
+      console.log(my_calendar);
+      my_calendar.build();
+
+    },
+    error: function (error) {
+      console.log(error);
+    }
+
+  });
+
+  // my_calendar.build();
+
 });

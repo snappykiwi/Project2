@@ -85,6 +85,17 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/invite/:id", function (req, res) {
+    db.Invite.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: [db.Event, db.User]
+    }).then(function (dbInvites) {
+      res.json(dbInvites);
+    });
+  });
+
 
   app.get("/inbox", (req, res) => {
     const user = req.user;
