@@ -21,14 +21,20 @@ $(document).ready(function () {
 
   console.log(window.location.href);
   console.log(window.location.href.split("/"));
-  
+
   if (window.location.href.split("/").includes("home")) {
 
   $.get({
     url: "/api/events/",
     success: function (res) {
       console.log(res);
-      // console.log(res.forEach());
+      res.forEach((el) => {
+        console.log(el.eventDate);
+        let allEventDates = el.eventDate;
+        let convertedDates = moment(allEventDates).format("YYYY-MM-DD");
+        let allEventTitles = [el.eventTitle];
+        return convertedDates, allEventTitles;
+      });
 
       let my_calendar = $("#dncalendar-container").dnCalendar({
         dataTitles: { defaultDate: 'default', today: 'Today' },
