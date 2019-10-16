@@ -1,28 +1,73 @@
-body.home {
+@import url('https://fonts.googleapis.com/css?family=Advent+Pro|Satisfy&display=swap');
+
+body {
+    color: #116466;
+    font-family: 'Advent Pro', sans-serif;
+}
+
+h1.site-title {
+    font-family: 'Satisfy', cursive;
+}
+
+div.home-page {
     height: 100%;
-    background: linear-gradient(90deg, #ebe5d9 50%, #869dab 50%);
 }
 
-.titleHomePage {
-    font-family: 'Be Vietnam', sans-serif;
-    font-size: 50px;
-    /* padding-top: 40px; */
-    padding-left: 200px;
-    /* padding-bottom: 100px; */
+div.img-bg {
+    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") left fixed no-repeat;
+    background-size: 38em;
+    height: 100vh
 }
 
-.img {
-    padding-left: 150px;
+div.login-half {
+    background-color: #282828;
+    height: 100vh;
 }
 
-.signUpHomePage {
-    font-family: 'Be Vietnam', sans-serif;
-    font-size: 40px;
-    
+h2.login-header {
+    margin-top: 1.75em;
 }
 
-.logInHomePage {
-    float: right;
-    padding-bottom: 300px;
-    padding-right: 60px;
+i.material-icons {
+    margin-right: .25em;
+}
+
+input#loginPassword, input#loginEmail {
+    color: #ffffff;
+}
+
+
+div.input-field input#loginEmail:focus+label, div.input-field input#loginPassword:focus+label {
+
+    color: #BEA177;
+
+}
+
+/* label underline focus color */
+div.input-field input#loginEmail:focus, div.input-field input#loginPassword:focus {
+
+    border-bottom: 1px solid #BEA177;
+    box-shadow: 0 1px 0 0 #BEA177;
+
+}
+
+.input-field .prefix.active {
+    color: #BEA177;
+
+}
+
+.btn, .btn-large, .btn-small {
+    background-color: #116466;
+}
+
+/* button.btn {
+    background-color: #BEA177;
+} */
+
+button.btn:hover {
+    background-color: #0c4546;
+}
+
+a.signUpLink {
+    color:  #A67F44;
 }

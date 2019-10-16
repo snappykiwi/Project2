@@ -1,9 +1,13 @@
-.list-group-item {
-  line-height: 2.5;
+body {
+  background-color: #282828;
 }
 
-body {
-  background: #ebe5d9;
+div.nav-wrapper {
+  background-color: #282828;
+}
+
+.list-group-item {
+  line-height: 2.5;
 }
 
 p.section-title {
@@ -16,7 +20,7 @@ div.time {
 }
 
 div.timepicker-digital-display {
-  background-color: #3cace0e3;
+  background-color: #5F5B6B;
 }
 
 .datepicker, .timepicker {
