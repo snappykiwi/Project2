@@ -66,6 +66,17 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/api/events/:id", function (req, res) {
+    db.Event.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    }).then(function (dbEvent) {
+
+      res.json(dbEvent);
+    });
+  });
+
 
   //create new event
   app.post("/api/events", function (req, res) {
@@ -92,7 +103,7 @@ module.exports = function (app) {
 
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
-    db.Event.destroy({ where: { id: req.params.id } }).then(function (dbEvent) {
+    db.Event.destroy({ where: { uuid: req.params.id } }).then(function (dbEvent) {
       res.json(dbEvent);
     });
   });
@@ -183,6 +194,26 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/api/invite/events/:eventId?/:userId?", function (req, res) {
+    if(req.params.eventId) {
+      db.Invite.findAll({
+        where: {
+          EventUuid: req.params.eventId,
+          UserId: req.params.userId
+        }
+      })
+    }
+    else {
+      db.Invite.findAll({
+        where: {
+          UserId: req.user.id
+        }
+      }).then(function(dbInvites) {
+        res.json(dbInvites);
+      })
+    }
+  });
+
   app.get("/api/invite/:id", (req, res) => {
     res.json([
       {
@@ -200,11 +231,23 @@ module.exports = function (app) {
   app.post("/api/invite", function (req, res) {
     db.Invite.create({
       date: req.body.date,
-      startTime: req.body.starTime,
+      startTime: req.body.startTime,
       endTime: req.body.endTime,
-      status: req.body.status,
+      status: "pending",
+      EventUuid: req.body.eventId,
+      UserId: req.user.id
     }).then(function (data) {
       console.log(data);
+    });
+  });
+
+  app.put("/api/invite/:id", function (req, res) {
+    db.Invite.update({
+      status: req.body.status
+    }, {
+      where: {
+        id: req.params.id
+      }
     });
   });
 
