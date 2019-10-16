@@ -270,6 +270,6 @@ $(document).ready(function () {
 
   $loginButton.on("click", handleLogin);
 
-  refreshEvent();
+  // refreshEvent();
 
 });

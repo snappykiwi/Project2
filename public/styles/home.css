@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Advent+Pro|Satisfy&display=swap');
 
 body {
-    color: #A67F44;
+    color: #116466;
     font-family: 'Advent Pro', sans-serif;
 }
 
@@ -14,8 +14,8 @@ div.home-page {
 }
 
 div.img-bg {
-    background: url("/images/fabrizio-verrecchia-Ai7sV3SSMIQ-unsplash.jpg") left fixed no-repeat;
-    background-size: 35em;
+    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") left fixed no-repeat;
+    background-size: 38em;
     height: 100vh
 }
 
@@ -56,35 +56,18 @@ div.input-field input#loginEmail:focus, div.input-field input#loginPassword:focu
 
 }
 
-button.btn {
+.btn, .btn-large, .btn-small {
+    background-color: #116466;
+}
+
+/* button.btn {
     background-color: #BEA177;
+} */
+
+button.btn:hover {
+    background-color: #0c4546;
 }
 
-button.btn:focus {
-    background-color: #A67F44;
+a.signUpLink {
+    color:  #A67F44;
 }
-
-
-/* .titleHomePage { */
-    /* font-family: 'Be Vietnam', sans-serif;
-    font-size: 50px; */
-    /* padding-top: 40px; */
-    /* padding-left: 200px; */
-    /* padding-bottom: 100px; */
-/* } */
-/* 
-.img {
-    padding-left: 150px;
-} */
-
-/* .signUpHomePage {
-    font-family: 'Be Vietnam', sans-serif;
-    font-size: 40px;
-    
-} */
-
-/* .logInHomePage {
-    float: right;
-    padding-bottom: 300px;
-    padding-right: 60px;
-} */
