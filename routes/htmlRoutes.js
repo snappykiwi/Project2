@@ -39,9 +39,15 @@ module.exports = function (app) {
   })
 
 
-  //add event
+  //create event page
   app.get("/addevent", middleware.isLoggedIn, function (req, res) {
-    db.Event.findAll({}).then(function (dbEvents) {
+    db.Event.findAll({
+      where: {
+        UserId: req.user.id, 
+
+      }
+    }).then(function (dbEvents) {
+      console.log(dbEvents);
       res.render("addEvent", {
         msg: "Welcome!",
         events: dbEvents
@@ -50,7 +56,7 @@ module.exports = function (app) {
   });
 
 
-  //add user
+  //register user page
   app.get("/adduser", function (req, res) {
     db.User.findAll({}).then(function (dbUsers) {
       res.render("addUser", {
@@ -60,7 +66,7 @@ module.exports = function (app) {
     });
   });
 
-  
+  // Create request page
   app.get("/request", middleware.isLoggedIn, function(req, res) {
     let user = req.user;
     db.User.findAll({

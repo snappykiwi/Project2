@@ -1,15 +1,15 @@
 <div>
 
   {{#each invites}}
-    {{this.owner}}
+    <h4>{{this.owner}} has requested a meetup</h4>
     {{this.eventTitle}}
     {{this.startTime}}
     {{this.endTime}}
     {{this.eventDate}}
     {{this.reason}}
-    {{!-- {{#each this.times}}
+    {{#each this.times}}
       {{this}}
-    {{/each}} --}}
+    {{/each}}
   {{/each}}
 
 </div>
