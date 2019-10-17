@@ -20,6 +20,17 @@ $(document).ready(function() {
         console.log(error);
 
       });
+    },
+
+    updateInvite: function(inviteStatus) {
+
+      console.log(inviteStatus);
+
+      return $.ajax({
+        url: "api/invites/" + inviteStatus,
+        type: "PUT"
+      });
+
     }
 
   };
@@ -35,6 +46,32 @@ $(document).ready(function() {
       API.createInvite(response);
 
     });
+  });
+
+  $("button.accept").on("click", function(event) {
+
+    let inviteId = $(this).val();
+
+    $.get(`api/invite/${inviteId}`).then(function(res) {
+
+      // get invite status and pass it in below
+      API.updateInvite(res);
+
+    });
+
+  });
+
+  $("button.decline").on("click", function(event) {
+
+    let inviteId = $(this).val();
+
+    $.get(`api/invite/${inviteId}`).then(function(res) {
+
+      // get invite status and pass it in below
+      API.updateInvite(res);
+
+    });
+
   });
 
 });
