@@ -36,12 +36,14 @@ $(document).ready(function() {
   };
 
   $("button.invite").on("click", function(event) {
+    console.log(event)
     let eventId = $(this).val();
 
+    console.log($(this).val());
     $.get(`api/events/${eventId}`).then(function(response) {
-      console.log(response[0]);
+      console.log(response);
 
-      API.createInvite(response[0]);
+      API.createInvite(response);
 
     });
   });

@@ -196,7 +196,7 @@ module.exports = function (app) {
             id: inviteData.UserId
           }
         }).then(function (userData) {
-          email(userData.username, `localhost:3000/invite/${inviteData.id}/${inviteData.EventUuid}`);
+          email(userData.username, `localhost:3000/invite/${inviteData.id}/event/${inviteData.EventUuid}`);
         })
       });
   });
