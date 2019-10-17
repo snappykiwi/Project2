@@ -22,13 +22,16 @@ $(document).ready(function() {
       });
     },
 
-    updateInvite: function(inviteStatus) {
+    updateInvite: function(inviteId, inviteStatus) {
 
-      console.log(inviteStatus);
+      console.log(inviteId, status);
 
       return $.ajax({
-        url: "api/invites/" + inviteStatus,
-        type: "PUT"
+        url: `api/invite/${inviteId}`,
+        type: "PUT",
+        data: {
+          status: inviteStatus
+        }
       });
 
     }
@@ -51,26 +54,20 @@ $(document).ready(function() {
   $("button.accept").on("click", function(event) {
 
     let inviteId = $(this).val();
+    console.log(inviteId);
+    let status = "accepted";
 
-    $.get(`api/invite/${inviteId}`).then(function(res) {
-
-      // get invite status and pass it in below
-      API.updateInvite(res);
-
-    });
+    API.updateInvite(inviteId, status);
 
   });
 
   $("button.decline").on("click", function(event) {
 
     let inviteId = $(this).val();
+    console.log(inviteId);
+    let status = "declined";
 
-    $.get(`api/invite/${inviteId}`).then(function(res) {
-
-      // get invite status and pass it in below
-      API.updateInvite(res);
-
-    });
+    API.updateInvite(inviteId, status);
 
   });
 
