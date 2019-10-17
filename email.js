@@ -32,7 +32,7 @@ function sendEmail(email, link) {
   const mailOptions = {
     from: "schedulingapp742@gmail.com",
     to: `${email}`,
-    subject: "You're Invited",
+    subject: "You're Invited!",
     generateTextFromHTML: true,
     html: `<b>Hey! If you're interested in coming to this event, click this link. <a>${link}</a></b>`
   };
