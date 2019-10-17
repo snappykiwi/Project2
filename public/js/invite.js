@@ -32,7 +32,7 @@ $(document).ready(function() {
         data: {
           status: inviteStatus
         }
-      });
+      })
 
     }
 
@@ -57,7 +57,9 @@ $(document).ready(function() {
     console.log(inviteId);
     let status = "accepted";
 
-    API.updateInvite(inviteId, status);
+    API.updateInvite(inviteId, status).then(function (data) {
+      console.log(data);
+    });
 
   });
 

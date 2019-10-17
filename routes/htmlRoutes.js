@@ -31,10 +31,23 @@ module.exports = function (app) {
       }
     }).then(function (dbUserEvents) {
       console.log(dbUserEvents);
-      res.render("userHome", {
-        msg: "Welcome Back",
-        userEvents: dbUserEvents
+
+      db.Invite.findAll({
+        where: {
+          status: "accepted"
+        },
+        include: [db.Event]
+      }).then(function(acceptedInv) {
+        console.log(acceptedInv);
+
+        res.render("userHome", {
+          msg: "Welcome Back",
+          userEvents: dbUserEvents,
+          acceptedInv: acceptedInv
+        })
+
       })
+
     })
   });
 
