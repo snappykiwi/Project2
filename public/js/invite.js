@@ -20,6 +20,20 @@ $(document).ready(function() {
         console.log(error);
 
       });
+    },
+
+    updateInvite: function(inviteId, inviteStatus) {
+
+      console.log(inviteId, status);
+
+      return $.ajax({
+        url: `api/invite/${inviteId}`,
+        type: "PUT",
+        data: {
+          status: inviteStatus
+        }
+      })
+
     }
 
   };
@@ -35,6 +49,28 @@ $(document).ready(function() {
       API.createInvite(response);
 
     });
+  });
+
+  $("button.accept").on("click", function(event) {
+
+    let inviteId = $(this).val();
+    console.log(inviteId);
+    let status = "accepted";
+
+    API.updateInvite(inviteId, status).then(function (data) {
+      console.log(data);
+    });
+
+  });
+
+  $("button.decline").on("click", function(event) {
+
+    let inviteId = $(this).val();
+    console.log(inviteId);
+    let status = "declined";
+
+    API.updateInvite(inviteId, status);
+
   });
 
 });
