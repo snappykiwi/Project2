@@ -1,0 +1,38 @@
+<nav>
+  <div class="nav-wrapper">
+    <ul id="nav-mobile" class="hide-on-med-and-down">
+      <li class="left"><a href="/home">View Calendar</a></li>
+      <li class="left"><a href="/request">New Event</a></li>
+      <li class="left active"><a href="/inbox">Inbox</a></li>
+      <li class="right"><a href="/logout">Log Out</a></li>
+    </ul>
+    <ul id="nav-mobile" class="hide-on-large-only">
+      <li class="left"><a href="/home"><i class="material-icons prefix">home</i></a></li>
+      <li class="left"><a href="/request"><i class="material-icons prefix">event</i></a></li>
+      <li class="left active"><a href="/inbox"><i class="material-icons prefix">mail_outline</i></a></li>
+      <li class="right"><a href="/logout"><i class="material-icons prefix">directions_walk</i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="container">
+
+  <div>
+
+    <div class="row">
+
+      <h4 class="col s12">{{invites.User.dataValues.name}} has asked if you would like to join</h4>
+      <p class="col s12">{{invites.Event.dataValues.eventTitle}}</p>
+      <p class="col s12">From {{invites.dataValues.startTime}} to {{invites.dataValues.endTime}}</p>
+      <p class="col s12">On {{invites.dataValues.date}}</p>
+      <p class="col s12">For {{invites.Event.description}}</p>
+
+      <button class="{{invites.id}}, accept btn" value={{invites.id}} id={{invites.id}}-accept><i class="material-icons prefix">event_available</i></button>
+      <button class="{{invites.id}}, decline btn" value={{invites.id}} id={{invites.id}}-decline><i class="material-icons prefix">event_busy</i></button>
+    </div>
+
+
+  </div>
+
+</div>

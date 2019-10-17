@@ -97,16 +97,18 @@ module.exports = function (app) {
         include: [db.User]
       }]
     }).then(function (dbInvites) {
+      console.log(dbInvites);
       res.render("inbox", {
         invites: dbInvites
       });
     }).catch(console.log("Error!"))
   })
 
-  app.get("/invite/:id/:eventId", function (req, res) {
+  app.get("/invite/:id/event/:eventId", function (req, res) {
     db.Invite.findOne({
       where: {
-        id: req.params.id
+        id: req.params.id, 
+        EventUuid: req.params.eventId
       },
       include: [{
         model: db.Event,
@@ -118,7 +120,8 @@ module.exports = function (app) {
         include: [db.User]
       }]
     }).then(function (dbInvites) {
-      res.json(dbInvites);
+      console.log(dbInvites.Event.dataValues.eventTitle);
+      res.render("eventInvite", {invites: dbInvites})
     });
   });
 
