@@ -29,7 +29,20 @@ $(document).ready(function () {
   $('#modal').modal();
   $('.modal-trigger').on("click", function () {
     console.log("modal clicked!");
-  })
+    console.log(this.id)
+    query = "api/events/" + this.id;
+    console.log(query);
+    $.ajax({
+      url: query,
+      type: "GET"
+    }).then(function (e) {
+      console.log(e);
+      console.log("success");
+    }).catch(function (err) {
+      if (err) throw err
+    });
+
+  });
 
   // The API object contains methods for each kind of request we'll make
   let API = {
@@ -79,6 +92,12 @@ $(document).ready(function () {
     getEvents: function (events) {
       return $.ajax({
         url: "api/events",
+        type: "GET"
+      })
+    },
+    getSingleEvent: function (e) {
+      return $.ajax({
+        url: "api/events/" + id,
         type: "GET"
       })
     },
