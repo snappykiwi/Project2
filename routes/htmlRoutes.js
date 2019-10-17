@@ -114,7 +114,7 @@ module.exports = function (app) {
     }).catch(console.log("Error!"))
   })
 
-  app.get("/invite/:id?", function (req, res) {
+  app.get("/invite/:id/:eventId", function (req, res) {
     db.Invite.findOne({
       where: {
         id: req.params.id
