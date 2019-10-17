@@ -1,14 +1,5 @@
 $(document).ready(function () {
-
-  //event hooks
-  let $eventSubmitButton = $("#event-submit");
   let $eventList = $("#event-list");
-  let $eventName = $("#event-name");
-  let $eventStartTime = $("#event-start-time");
-  let $eventDate = $("#event-date");
-  let $eventDescription = $("#event-description");
-  let $eventAttendee = $("#event-attendee");
-
   // user hooks
   let $userSubmitButton = $("#user-submit");
   let $loginButton = $("#login");
@@ -46,22 +37,6 @@ $(document).ready(function () {
 
   // The API object contains methods for each kind of request we'll make
   let API = {
-
-    saveEvent: function (eventData) {
-      $.post("/api/events", {
-        eventTitle: eventData.eventTitle,
-        startTime: eventData.startTime,
-        endTime: eventData.endTime,
-        eventDate: eventData.eventDate,
-        description: eventData.description
-      })
-        .then(function (data) {
-          console.log("success");
-          window.location.replace("/home");
-          if (err) throw err;
-          refreshEvent();
-        })
-    },
 
     saveUser: function (username, name, password) {
       console.log(username, name, password)
@@ -207,29 +182,6 @@ $(document).ready(function () {
     API.loginUser(user.username, user.password);
   };
 
-  // handleFormSubmit is called whenever we submit a new event
-  // Save the new event to the db and refresh the list
-
-  const handleEventSubmit = function (event) {
-    event.preventDefault();
-    console.log("Event Submit Button Clicked!")
-    let eventData = {
-      eventTitle: $eventName.val().trim(),
-      startTime: $eventStartTime.val().trim(),
-      endTime: $eventStartTime.val().trim(),
-      eventDate: $eventDate.val().trim(),
-      description: $eventDescription.val().trim(),
-    }
-
-    if (!(eventData.eventTitle && eventData.startTime && eventData.eventDate)) {
-      alert("Please make sure everything is filled out correctly, thank you!")
-
-    }
-
-    API.saveEvent(eventData);
-
-  };
-
   // Handle User Submit
 
   const handleUserSubmit = function (event) {
@@ -294,7 +246,7 @@ $(document).ready(function () {
 
   // Add event listeners to the submit and delete buttons
 
-  $eventSubmitButton.on("click", handleEventSubmit);
+
   $eventList.on("click", ".delete", handleEventBtnClick)
 
   $userSubmitButton.on("click", handleUserSubmit);
