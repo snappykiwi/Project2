@@ -1,5 +1,6 @@
 const db = require("../models");
 const passport = require("passport");
+const email = require("../email.js");
 
 module.exports = function (app) {
 
@@ -77,7 +78,6 @@ module.exports = function (app) {
     });
   });
 
-
   //create new event
   app.post("/api/events", function (req, res) {
 
@@ -99,8 +99,6 @@ module.exports = function (app) {
         res.status(err).json(err);
       })
   });
-
-
 
   //Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
@@ -124,7 +122,6 @@ module.exports = function (app) {
     });
   });
 
-
   //REQUEST ROUTES
   app.post("/api/request", (req, res) => {
     db.Request.create({
@@ -142,7 +139,6 @@ module.exports = function (app) {
       res.json(dbRequest);
     });
   });
-
 
   //add new user
   app.post("/api/users", function (req, res) {
@@ -161,7 +157,6 @@ module.exports = function (app) {
     });
   });
 
-
   //REQUEST ROUTES
   app.post("/api/request", (req, res) => {
     db.Request.create({
@@ -180,8 +175,6 @@ module.exports = function (app) {
     });
   });
 
-
-
   //INVITE ROUTE
 
   app.get("/api/invite/:id", function (req, res) {
@@ -196,7 +189,7 @@ module.exports = function (app) {
   });
 
   app.get("/api/invite/events/:eventId?/:userId?", function (req, res) {
-    if(req.params.eventId) {
+    if (req.params.eventId) {
       db.Invite.findAll({
         where: {
           EventUuid: req.params.eventId,
@@ -209,24 +202,10 @@ module.exports = function (app) {
         where: {
           UserId: req.user.id
         }
-      }).then(function(dbInvites) {
+      }).then(function (dbInvites) {
         res.json(dbInvites);
       })
     }
-  });
-
-  app.get("/api/invite/:id", (req, res) => {
-    res.json([
-      {
-        name: "bob",
-        date: 1570817096319,
-        times: [
-          1570817044814, 1570817095477, 1570817096319
-        ],
-        reason: "code",
-        invite_id: "bskdfai032"
-      }
-    ]);
   });
 
   app.post("/api/invite", function (req, res) {
@@ -237,9 +216,18 @@ module.exports = function (app) {
       status: "pending",
       EventUuid: req.body.eventId,
       UserId: req.user.id
-    }).then(function (data) {
-      console.log(data);
-    });
+    })
+      .then(function (inviteData) {
+        console.log(inviteData);
+        db.User.findOne({
+          where: {
+            id: inviteData.UserId
+          }
+        }).then(function (userData) {
+          email(userData.username, `localhost:3000/invite/${inviteData.id}/${inviteData.EventUuid}`);
+        })
+      });
+
   });
 
   app.put("/api/invite/:id", function (req, res) {
