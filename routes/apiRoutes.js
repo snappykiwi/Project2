@@ -127,13 +127,27 @@ module.exports = function (app) {
       })
   });
 
+  //update event
+
+  app.put("/api/events/:id", function(req,res){
+    db.Event.update(
+      req.body,
+      {
+        where: {
+          id: req.body.id
+        }
+      }).then(function(dbEvent){
+        res.json(dbEvent);
+      })
+  })
+
   // Edit event
   app.put("/api/posts", function (req, res) {
     db.Event.update(
       req.body,
       {
         where: {
-          id: req.body.id
+          id: req.body.uuid
         }
       }).then(function (dbEvent) {
         res.json(dbPost);
