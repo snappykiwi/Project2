@@ -189,7 +189,7 @@ module.exports = function (app) {
   });
 
   app.get("/api/invite/events/:eventId?/:userId?", function (req, res) {
-    if(req.params.eventId) {
+    if (req.params.eventId) {
       db.Invite.findAll({
         where: {
           EventUuid: req.params.eventId,
@@ -202,14 +202,14 @@ module.exports = function (app) {
         where: {
           UserId: req.user.id
         }
-      }).then(function(dbInvites) {
+      }).then(function (dbInvites) {
         res.json(dbInvites);
       })
     }
   });
 
-  app.post("/api/invite", async function (req, res) {
-      let user = await db.Invite.create({
+  app.post("/api/invite", function (req, res) {
+    db.Invite.create({
       date: req.body.date,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
@@ -217,12 +217,16 @@ module.exports = function (app) {
       EventUuid: req.body.eventId,
       UserId: req.user.id
     })
-    // .then(function (data) {
-    //   console.log(data);
-    // });
-    // db.findOne(where: User)
-    let userEmail = await db.findOne({where: {UserId: User.UserId}});
-    userEmail.username;
+      .then(function (inviteData) {
+        console.log(inviteData);
+        db.User.findOne({
+          where: {
+            id: inviteData.UserId
+          }
+        }).then(function (userData) {
+          email(userData.username, `localhost:3000/invite/${inviteData.id}/${inviteData.EventUuid}`);
+        })
+      });
 
   });
 

@@ -4,7 +4,7 @@ const nodemailer  = require("nodemailer"),
       { google }  = require("googleapis"),
       OAuth2      = google.auth.OAuth2;
 
-function sendEmail() {
+function sendEmail(email, link) {
 
   const oauth2Client = new OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -31,10 +31,10 @@ function sendEmail() {
   
   const mailOptions = {
     from: "schedulingapp742@gmail.com",
-    to: ``,
-    subject: ``,
+    to: `${email}`,
+    subject: "You're Invited",
     generateTextFromHTML: true,
-    html: `<b>Hey! If you're interested in coming to this event, click this link.</b>`
+    html: `<b>Hey! If you're interested in coming to this event, click this link. <a>${link}</a></b>`
   };
   
   smtpTransport.sendMail(mailOptions, (error, response) => {
