@@ -33,8 +33,8 @@
     <ul id="event-list" class="list-group col s6 offset-s3">
         {{#each userEvents}}
         <li data-id="{{this.id}}" class="list-group-item">
-            <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}</a>>
-                <button href="#modal" class="btn right modal-trigger">Edit</button>
+            <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}</a>
+                <button href="#modal" class="btn right modal-trigger"><i class="material-icons">edit</i></button>
                 <button class="btn right delete"><i class="material-icons">delete</i></button>
                 <button class="btn right invite" value="{{this.id}}">
                     <i class="material-icons">person_add</i></button>
