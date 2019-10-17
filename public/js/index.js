@@ -8,6 +8,7 @@ $(document).ready(function () {
   let $eventDate = $("#event-date");
   let $eventDescription = $("#event-description");
   let $eventAttendee = $("#event-attendee");
+  let $eventUpdate = $("#edit");
   // user hooks
   let $userSubmitButton = $("#user-submit");
   let $loginButton = $("#login");
@@ -37,9 +38,9 @@ $(document).ready(function () {
         .then(function (data) {
           console.log("success");
           window.location.replace("/home");
-          if(err) throw err;
+          if (err) throw err;
           refreshEvent();
-        })      
+        })
     },
 
     saveUser: function (username, name, password) {
@@ -94,10 +95,17 @@ $(document).ready(function () {
         url: "api/users/" + id,
         type: "DELETE"
       });
+    },
+    updateEvent: function (id) {
+      return $.ajax({
+        url: "api/events/" + id,
+        type: "UPDATE"
+      })
+      console.log("API UPDATE SENT")
     }
   };
 
-  $('button#invite').on("click", function(event) {
+  $('button#invite').on("click", function (event) {
     $.post("api/invite");
   });
 
@@ -109,7 +117,7 @@ $(document).ready(function () {
         let $a = $("<a>")
           .text(event.eventTitle)
           .attr("href", "/events/" + event.id)
-          .attr("text","events" + `Starting At ${event.startTime}`)
+          .attr("text", "events" + `Starting At ${event.startTime}`)
 
         let $li = $("<li>")
           .attr({
@@ -202,17 +210,19 @@ $(document).ready(function () {
     }
 
     API.saveEvent(eventData);
-   
-
-
-
-
-    // $eventName.val("");
-    // $eventStartTime.val("");
-    // $eventDate.val("");
-    // $eventDescription.val("");
-
   };
+  let handleEventUpdate = function () {
+    event.preventDefault();
+    let updatedData = {
+      eventTitle: $eventNameUpdate.val().trim(),
+      startTime: $eventStartTimeUpdate.val().trim(),
+      endtime: $eventStartTimeUpdate.val().trim(),
+      eventDate: $eventDateUpdate.val().trim(),
+      description: $eventDescriptionUpdate.val().trim(),
+    };
+    API.updateEvent(updatedData);
+    console.log("Information Updated", updatedData);
+  }
 
   //Handle User Submit
 
@@ -261,28 +271,33 @@ $(document).ready(function () {
 
     API.deleteUser(idToDelete).then(function () {
       refreshUser();
-    })
-  }
+    });
+  };
 
 
-  $signUpLink.on("click", function(event) {
+
+
+  $signUpLink.on("click", function (event) {
     $loginDiv.fadeOut("slow");
-    setTimeout(function() {
+    setTimeout(function () {
       $signUpDiv.fadeIn("slow");
     }, 700)
   });
 
-  $loginLink.on("click", function(event) {
+  $loginLink.on("click", function (event) {
     $signUpDiv.fadeOut("slow");
-    setTimeout(function() {
+    setTimeout(function () {
       $loginDiv.fadeIn("slow");
     }, 700)
   });
+
+
 
   // Add event listeners to the submit and delete buttons
 
   $eventSubmitButton.on("click", handleEventSubmit);
   $eventList.on("click", ".delete", handleEventBtnClick)
+  $eventUpdate.on("click", handleEventUpdate);
 
   $userSubmitButton.on("click", handleUserSubmit);
   $userList.on("click", ".delete", deleteUserBtnClick)

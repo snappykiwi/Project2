@@ -3,20 +3,6 @@ const passport = require("passport");
 
 module.exports = function (app) {
 
-  // AUTH API ROUTES
-
-  app.post('/api/login',
-    passport.authenticate("local", {
-      successRedirect: '/home',
-      failureRedirect: '/login',
-      failureFlash: true
-    }),
-    function (req, res) {
-      console.log(req.user);
-      res.json(req.user);
-    }
-  );
-
   app.post("/api/signup", function (req, res) {
 
     db.User.create({
@@ -31,6 +17,20 @@ module.exports = function (app) {
         res.status(401).json(err);
       });
   });
+  // AUTH API ROUTES
+
+  app.post('/api/login',
+    passport.authenticate("local", {
+      successRedirect: '/home',
+      failureRedirect: '/login',
+      failureFlash: true
+    }),
+    function (req, res) {
+      console.log(req.user);
+      res.json(req.user);
+    }
+  );
+
 
   // Route for logging user out
   app.get("/logout", function (req, res) {
@@ -38,7 +38,9 @@ module.exports = function (app) {
     res.redirect("/");
   });
 
-  //gives back some user data
+
+  // USER ROUTES
+  // Gets User Data
   app.get("/api/user_data", function (req, res) {
     if (!req.user) {
 
@@ -51,6 +53,36 @@ module.exports = function (app) {
         id: req.user.id
       });
     }
+  });
+
+  // GETS ALL USERS
+  app.get("/api/users", function (req, res) {
+    db.User.findAll({}).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+  //DELETES INDIVIDUAL USER
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+  // CREATES USERS
+  app.post("/api/users", function (req, res) {
+    db.User.create(req.body).then(function (dbUser) {
+      console.log("Firing Api Users!")
+      console.log(dbUser);
+      res.json(dbUser);
+
+    });
   });
 
   // EVENT API ROUTES 
@@ -66,6 +98,7 @@ module.exports = function (app) {
     });
   });
 
+  //GET EVENT BY ID
   app.get("/api/events/:id", function (req, res) {
     db.Event.findOne({
       where: {
@@ -107,20 +140,15 @@ module.exports = function (app) {
       res.json(dbEvent);
     });
   });
-
-  // USER API ROUTES
-  //get all users
-  app.get("/api/users", function (req, res) {
-    db.User.findAll({}).then(function (dbUser) {
-      res.json(dbUser);
-    });
-  });
-
-  //Delete user by id
-  app.delete("/api/users/:id", function (req, res) {
-    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
-      res.json(dbUser);
-    });
+  //Update Event by id
+  app.put("/api/events/:id", function (req, res) {
+    db.Event.update(req.body, { where: { uuid: req.body.id } }).then(function (dbEvent) {
+      console.log("event updated", dbEvent);
+      res.json(dbEvent);
+    })
+      .catch(function (err) {
+        console.log(err);
+      });
   });
 
 
@@ -139,24 +167,6 @@ module.exports = function (app) {
     }).then(function (dbRequest) {
       console.log(dbRequest);
       res.json(dbRequest);
-    });
-  });
-
-
-  //add new user
-  app.post("/api/users", function (req, res) {
-    db.User.create(req.body).then(function (dbUser) {
-      console.log("Firing Api Users!")
-      console.log(dbUser);
-      res.json(dbUser);
-
-    });
-  });
-
-  //Delete user by id
-  app.delete("/api/users/:id", function (req, res) {
-    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
-      res.json(dbUser);
     });
   });
 
@@ -195,7 +205,7 @@ module.exports = function (app) {
   });
 
   app.get("/api/invite/events/:eventId?/:userId?", function (req, res) {
-    if(req.params.eventId) {
+    if (req.params.eventId) {
       db.Invite.findAll({
         where: {
           EventUuid: req.params.eventId,
@@ -208,7 +218,7 @@ module.exports = function (app) {
         where: {
           UserId: req.user.id
         }
-      }).then(function(dbInvites) {
+      }).then(function (dbInvites) {
         res.json(dbInvites);
       })
     }
@@ -250,6 +260,8 @@ module.exports = function (app) {
       }
     });
   });
+
+
 
   //Edit event
   app.put("/api/posts", function (req, res) {
