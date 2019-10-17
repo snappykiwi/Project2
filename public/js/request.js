@@ -4,10 +4,10 @@ $(document).ready(function () {
   let hourDur;
   let minDur = 0;
 
-
   let API = {
 
     getUsers: function (user) {
+
       $.get({
         url: "/api/users",
         success: function (response) {
@@ -37,15 +37,12 @@ $(document).ready(function () {
         .catch(console.log("error"));
     },
 
-
   }
 
   API.getUsers();
 
-
   // initialize materialize drop down menu for request
   $('select').formSelect();
-
 
   const start = datepicker('.start', { id: 1 });
   const end = datepicker('.end', { id: 1 });
@@ -61,7 +58,6 @@ $(document).ready(function () {
       console.log(minute);
     }
   });
-
 
   // when choice for time restriction changes, show/hide timepicker(s)
   $('select#time-rest').on("change", function (event) {
@@ -100,7 +96,6 @@ $(document).ready(function () {
     minDur = $(this).val();
     console.log(minDur);
   });
-
 
   $('button#submit-request').on("click", function (event) {
 
