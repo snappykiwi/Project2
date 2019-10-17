@@ -29,7 +29,7 @@ $(document).ready(function () {
   $('#modal').modal();
   $('.modal-trigger').on("click", function () {
     console.log("modal clicked!");
-    console.log(this.id)
+    console.log(this.uuid)
     query = "api/events/" + this.id;
     console.log(query);
     $.ajax({
