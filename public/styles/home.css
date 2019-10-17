@@ -103,6 +103,6 @@ div#dncalendar-prev-month i#prev-month{
     color: #ffffff;
 }
 
-h1 {
+h1, li.userNameNav, .gold {
     color: #A67F44;
 }
