@@ -1,27 +1,105 @@
 <nav>
-    <div class="nav-wrapper">
-        <ul id="nav-mobile" class="hide-on-med-and-down">
-            <li class="left"><a href="/home">View Calendar</a></li>
-            <li class="left"><a href="/addevent">Create Event</a></li>
-            <li class="left active"><a href="/request">Schedule Event</a></li>
-            <li class="left"><a href="/inbox">Inbox</a></li>
-            <li class="right"><a href="/logout">Log Out</a></li>
-        </ul>
-        <ul id="nav-mobile" class="hide-on-large-only">
-            <li class="left"><a href="/home"><i class="material-icons prefix">home</i></a></li>
-            <li class="left"><a href="/addevent"><i class="material-icons prefix">event</i></a></li>
-            <li class="left active"><a href="/request"><i class="material-icons prefix">calendar_today</i></a></li>
-            <li class="left"><a href="/inbox"><i class="material-icons prefix">mail_outline</i></a></li>
-            <li class="right"><a href="/logout"><i class="material-icons prefix">directions_walk</i></a></li>
-        </ul>
-    </div>
+  <div class="nav-wrapper">
+    <ul id="nav-mobile" class="hide-on-med-and-down">
+      <li class="left"><a href="/home">View Calendar</a></li>
+      <li class="left active"><a href="/request">New Event</a></li>
+      <li class="left"><a href="/inbox">Inbox</a></li>
+      <li class="right"><a href="/logout">Log Out</a></li>
+    </ul>
+    <ul id="nav-mobile" class="hide-on-large-only">
+      <li class="left"><a href="/home"><i class="material-icons prefix">home</i></a></li>
+      <li class="left active"><a href="/request"><i class="material-icons prefix">event</i></a></li>
+      <li class="left"><a href="/inbox"><i class="material-icons prefix">mail_outline</i></a></li>
+      <li class="right"><a href="/logout"><i class="material-icons prefix">directions_walk</i></a></li>
+    </ul>
+  </div>
 </nav>
 
+<div class="row">
+  <div class="col s5 m4 offset-s1 offset-m2">
+    <button class="btn right" id="createSwitch">Create Event</button>
+  </div>
+  <div class="col s5 m4">
+    <button class="btn" id="requestSwitch">Request Event</button>
+  </div>
+</div>
 
-<div class="container">
+
+<div id="createEvent" class="container animated">
+  <div class="row">
+
+    <h1 class="col s12 center">Create an Event</h1>
+    <p class="col s12 center">(Choose this if you already have set time for your event)</p>
+
+  </div>
+
+    <div class="row">
+
+    <div class="col s12 m6 offset-m3">
+
+      <p class="col s12 center section-title">Event Title</p>
+
+      <p class="col s12 center">Enter the title of your event</p>
+      <input class="col s6 offset-s3 m12" id="createTitle" type="text">
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <p class="section-title col s12 center">Date</p>
+    <p class="col s12 center">Pick a date for your event</p>
+
+    <div class="col s12 m6 offset-m3">
+      <label for="createDate">Date</label>
+      <input type="text" id="createDate" class="datepicker createDate">
+    </div>
+
+  </div>
+
+  <div class="row">
+    <p class="section-title col s12 center">Time</p>
+    <p class="col s12 center">Choose a Time for your event</p>
+
+    <div class="col s6 createTime">
+      <input id="createSTime" type="text" class="timepicker time timeOne">
+      <label class="time timeOne" for="createSTime">Start Time</label>
+    </div>
+
+    <div class="col s6 createTime">
+      <input id="createETime" type="text" class="timepicker time timeTwo">
+      <label class="time timeTwo" for="createETime">End Time</label>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col s12 m6 offset-m3">
+
+      <p class="col s12 center section-title">Description</p>
+
+      <p class="col s12 center">Notes for your event</p>
+      <input class="col s6 offset-s3 m12" id="createDesc" type="text">
+
+    </div>
+
+  </div>
+
+
+  <div class="row center">
+    <button id="submit-create" class="col s2 offset-s5 btn waves-effect">Submit</button>
+  </div>
+
+</div>
+
+
+<div id="requestEvent" class="container animated">
   <div class="row">
 
     <h1 class="col s12 center">Request an Event</h1>
+    <p class="col s12 center">(Choose this if you are not sure of a specific time)</p>
 
   </div>
 
@@ -35,7 +113,7 @@
     <div class="input-field col s6 m4 offset-s3 offset-m4">
       <select id="friend">
         {{#each users}}
-          {{> requests/user-block }}
+        {{> requests/user-block }}
         {{/each}}
       </select>
       <label>Friend To Invite</label>
@@ -137,7 +215,7 @@
 
       <p class="col s12 center section-title">Reason</p>
 
-      <p class="col s12 center">Give a short reason or title for your request</p>
+      <p class="col s12 center reason">Give a short reason or title for your request</p>
       <input class="col s6 offset-s3 m12" id="req-reason" type="text">
 
     </div>
@@ -146,9 +224,11 @@
 
 
   <div class="row">
-    <button id="submit-request" class="col btn waves-effect">Submit</button>
+    <button id="submit-request" class="col s2 offset-s5 btn waves-effect">Submit</button>
   </div>
 
 </div>
+
+
 
 <script src="js/request.js"></script>
