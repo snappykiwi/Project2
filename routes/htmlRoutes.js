@@ -1,4 +1,4 @@
-var db = require("../models");
+const db = require("../models");
 const middleware = require("../config/middleware/index");
 const Op = db.Sequelize.Op
 
@@ -21,10 +21,9 @@ module.exports = function (app) {
         });
       });
     }
-
   });
 
-  //user homepage
+  // user homepage
   app.get("/home", middleware.isLoggedIn, function (req, res) {
     db.Event.findAll({
       where: {
@@ -39,7 +38,7 @@ module.exports = function (app) {
     })
   });
 
-  //create event page
+  // create event page
   app.get("/addevent", middleware.isLoggedIn, function (req, res) {
     db.Event.findAll({
       where: {
@@ -55,15 +54,18 @@ module.exports = function (app) {
     });
   });
 
-  //register user page
-  // app.get("/adduser", function (req, res) {
-  //   db.User.findAll({}).then(function (dbUsers) {
-  //     res.render("addUser", {
-  //       msg: "Add User",
-  //       user: dbUsers
-  //     });
-  //   });
-  // });
+  // load event page and pass in an event by id
+  app.get("/events/:id", function (req, res) {
+    db.Event.findOne({
+      where: {
+        uuid: req.params.id
+      }
+    }).then(function (dbEvent) {
+      res.render("event", {
+        event: dbEvent
+      });
+    });
+  });
 
   // Create request page
   app.get("/request", middleware.isLoggedIn, function (req, res) {
@@ -80,24 +82,11 @@ module.exports = function (app) {
     })
   });
 
-  //load event page and pass in an event by id
-  app.get("/events/:id", function (req, res) {
-    db.Event.findOne({
-      where: {
-        uuid: req.params.id
-      }
-    }).then(function (dbEvent) {
-      res.render("event", {
-        event: dbEvent
-      });
-    });
-  });
-
-  app.get("/inbox", middleware.isLoggedIn, function(req, res) {
+  app.get("/inbox", middleware.isLoggedIn, function (req, res) {
     db.Invite.findAll({
       where: {
         UserId: req.user.id
-      }, 
+      },
       include: [{
         model: db.Event,
         include: [db.User]

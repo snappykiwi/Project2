@@ -4,7 +4,28 @@ const email = require("../email.js");
 
 module.exports = function (app) {
 
-  // AUTH API ROUTES
+  // ***** AUTH API ROUTES *****
+
+  // Route for logging user out
+  app.get("/logout", function (req, res) {
+    req.logout();
+    res.redirect("/");
+  });
+
+  // gives back some user data
+  app.get("/api/user_data", function (req, res) {
+    if (!req.user) {
+
+      res.json({});
+    } else {
+
+      res.json({
+        name: req.user.name,
+        username: req.user.email,
+        id: req.user.id
+      });
+    }
+  });
 
   app.post('/api/login',
     passport.authenticate("local", {
@@ -33,29 +54,35 @@ module.exports = function (app) {
       });
   });
 
-  // Route for logging user out
-  app.get("/logout", function (req, res) {
-    req.logout();
-    res.redirect("/");
+  // ***** USER API ROUTES *****
+
+  // get all users
+  app.get("/api/users", function (req, res) {
+    db.User.findAll({}).then(function (dbUser) {
+      res.json(dbUser);
+    });
   });
 
-  //gives back some user data
-  app.get("/api/user_data", function (req, res) {
-    if (!req.user) {
+  // add new user
+  app.post("/api/users", function (req, res) {
+    db.User.create(req.body).then(function (dbUser) {
+      console.log("Firing Api Users!")
+      console.log(dbUser);
+      res.json(dbUser);
 
-      res.json({});
-    } else {
-
-      res.json({
-        name: req.user.name,
-        username: req.user.email,
-        id: req.user.id
-      });
-    }
+    });
   });
 
-  // EVENT API ROUTES 
-  //get all events
+  // Delete user by id
+  app.delete("/api/users/:id", function (req, res) {
+    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
+      res.json(dbUser);
+    });
+  });
+
+  // ***** EVENT API ROUTES *****
+
+  // get all events
   app.get("/api/events", function (req, res) {
     db.Event.findAll({
       where: {
@@ -78,7 +105,7 @@ module.exports = function (app) {
     });
   });
 
-  //create new event
+  // create new event
   app.post("/api/events", function (req, res) {
 
     db.Event.create({
@@ -100,82 +127,27 @@ module.exports = function (app) {
       })
   });
 
-  //Delete an event by id
+  // Edit event
+  app.put("/api/posts", function (req, res) {
+    db.Event.update(
+      req.body,
+      {
+        where: {
+          id: req.body.id
+        }
+      }).then(function (dbEvent) {
+        res.json(dbPost);
+      });
+  });
+
+  // Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
     db.Event.destroy({ where: { uuid: req.params.id } }).then(function (dbEvent) {
       res.json(dbEvent);
     });
   });
 
-  // USER API ROUTES
-  //get all users
-  app.get("/api/users", function (req, res) {
-    db.User.findAll({}).then(function (dbUser) {
-      res.json(dbUser);
-    });
-  });
-
-  //Delete user by id
-  app.delete("/api/users/:id", function (req, res) {
-    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
-      res.json(dbUser);
-    });
-  });
-
-  //REQUEST ROUTES
-  app.post("/api/request", (req, res) => {
-    db.Request.create({
-      dateStart: req.body.dateStart,
-      dateEnd: req.body.dateEnd,
-      startTime: req.body.starTime,
-      endTime: req.body.endTime,
-      duration: req.body.duration,
-      reason: req.body.reason,
-      status: req.body.status,
-      UserId: req.user.id
-
-    }).then(function (dbRequest) {
-      console.log(dbRequest);
-      res.json(dbRequest);
-    });
-  });
-
-  //add new user
-  app.post("/api/users", function (req, res) {
-    db.User.create(req.body).then(function (dbUser) {
-      console.log("Firing Api Users!")
-      console.log(dbUser);
-      res.json(dbUser);
-
-    });
-  });
-
-  //Delete user by id
-  app.delete("/api/users/:id", function (req, res) {
-    db.User.destroy({ where: { id: req.params.id } }).then(function (dbUser) {
-      res.json(dbUser);
-    });
-  });
-
-  //REQUEST ROUTES
-  app.post("/api/request", (req, res) => {
-    db.Request.create({
-      dateStart: req.body.dateStart,
-      dateEnd: req.body.dateEnd,
-      startTime: req.body.starTime,
-      endTime: req.body.endTime,
-      duration: req.body.duration,
-      reason: req.body.reason,
-      status: req.body.status,
-      UserId: req.user.id
-
-    }).then(function (dbRequest) {
-      console.log(dbRequest);
-      res.json(dbRequest);
-    });
-  });
-
-  //INVITE ROUTE
+  // ***** INVITE ROUTE *****
 
   app.get("/api/invite/:id", function (req, res) {
     db.Invite.findOne({
@@ -227,7 +199,6 @@ module.exports = function (app) {
           email(userData.username, `localhost:3000/invite/${inviteData.id}/${inviteData.EventUuid}`);
         })
       });
-
   });
 
   app.put("/api/invite/:id", function (req, res) {
@@ -240,17 +211,23 @@ module.exports = function (app) {
     });
   });
 
-  //Edit event
-  app.put("/api/posts", function (req, res) {
-    db.Event.update(
-      req.body,
-      {
-        where: {
-          id: req.body.id
-        }
-      }).then(function (dbEvent) {
-        res.json(dbPost);
-      });
+  // ***** REQUEST ROUTES *****
+
+  app.post("/api/request", (req, res) => {
+    db.Request.create({
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
+      startTime: req.body.starTime,
+      endTime: req.body.endTime,
+      duration: req.body.duration,
+      reason: req.body.reason,
+      status: req.body.status,
+      UserId: req.user.id
+
+    }).then(function (dbRequest) {
+      console.log(dbRequest);
+      res.json(dbRequest);
+    });
   });
 
 };

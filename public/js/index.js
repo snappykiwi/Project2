@@ -128,7 +128,7 @@ $(document).ready(function () {
     $.post("api/invite");
   });
 
-  //refresh event
+  // refresh event
 
   const refreshEvent = function () {
     API.getEvents().then(function (data) {
@@ -159,7 +159,7 @@ $(document).ready(function () {
     });
   };
 
-  //refresh User
+  // refresh User
 
   const refreshUser = function () {
 
@@ -207,8 +207,6 @@ $(document).ready(function () {
     API.loginUser(user.username, user.password);
   };
 
-
-
   // handleFormSubmit is called whenever we submit a new event
   // Save the new event to the db and refresh the list
 
@@ -230,18 +228,9 @@ $(document).ready(function () {
 
     API.saveEvent(eventData);
 
-
-
-
-
-    // $eventName.val("");
-    // $eventStartTime.val("");
-    // $eventDate.val("");
-    // $eventDescription.val("");
-
   };
 
-  //Handle User Submit
+  // Handle User Submit
 
   const handleUserSubmit = function (event) {
 
@@ -263,8 +252,6 @@ $(document).ready(function () {
 
     API.saveUser(user.username, user.name, user.password);
 
-    // $userName.val("");
-    // $userPassword.val("");
   };
 
   // handleDeleteBtnClick is called when an event's delete button is clicked
@@ -290,7 +277,6 @@ $(document).ready(function () {
       refreshUser();
     })
   }
-
 
   $signUpLink.on("click", function (event) {
     $loginDiv.fadeOut("slow");
