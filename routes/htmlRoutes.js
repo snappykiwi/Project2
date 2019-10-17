@@ -28,14 +28,12 @@ module.exports = function (app) {
     db.Event.findAll({
       where: {
         UserId: req.user.id
-      }, include: [db.User]
+      }
     }).then(function (dbUserEvents) {
-      console.log(dbUserEvents[0].User.dataValues.name);
-      let userName = dbUserEvents[0].User.dataValues.name
+
       res.render("userHome", {
         msg: "Welcome Back",
-        userEvents: dbUserEvents,
-        userName: userName
+        userEvents: dbUserEvents
       })
     })
   });
@@ -87,7 +85,8 @@ module.exports = function (app) {
   app.get("/inbox", middleware.isLoggedIn, function (req, res) {
     db.Invite.findAll({
       where: {
-        UserId: req.user.id
+        status: "pending",
+        UserId: req.user.id,
       },
       include: [{
         model: db.Event,

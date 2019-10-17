@@ -76,6 +76,7 @@ div.input-field input#passwordTwo:focus {
 
 .btn, .btn-large, .btn-small {
     background-color: #116466;
+    margin: 3px;
 }
 
 /* button.btn {

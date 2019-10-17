@@ -127,19 +127,6 @@ module.exports = function (app) {
       })
   });
 
-  // Edit event
-  app.put("/api/posts", function (req, res) {
-    db.Event.update(
-      req.body,
-      {
-        where: {
-          id: req.body.id
-        }
-      }).then(function (dbEvent) {
-        res.json(dbPost);
-      });
-  });
-
   // Delete an event by id
   app.delete("/api/events/:id", function (req, res) {
     db.Event.destroy({ where: { uuid: req.params.id } }).then(function (dbEvent) {
@@ -222,7 +209,7 @@ module.exports = function (app) {
       duration: req.body.duration,
       reason: req.body.reason,
       status: req.body.status,
-      UserId: req.user.id
+      UserId: req.body.friend
 
     }).then(function (dbRequest) {
       console.log(dbRequest);

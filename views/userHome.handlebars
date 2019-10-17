@@ -4,7 +4,6 @@
             <li class="left active"><a href="/home">View Calendar</a></li>
             <li class="left"><a href="/request">New Event</a></li>
             <li class="left"><a href="/inbox">Inbox</a></li>
-            <li class="right userNameNav">{{userName}}'s Calendar</li>
             <li class="right"><a href="/logout">Log Out</a></li>
         </ul>
         <ul id="nav-mobile" class="hide-on-large-only">
@@ -29,7 +28,7 @@
 
 <div class="row">
 
-    <ul id="event-list" class="list-group col s6 offset-s3">
+    <ul id="event-list" class="list-group col s12 m6 offset-m3">
         {{#each userEvents}}
         <li data-id="{{this.uuid}}" class="list-group-item">
             <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}</a>
