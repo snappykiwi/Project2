@@ -8,6 +8,7 @@ $(document).ready(function () {
   let $eventDate = $("#event-date");
   let $eventDescription = $("#event-description");
   let $eventAttendee = $("#event-attendee");
+
   // user hooks
   let $userSubmitButton = $("#user-submit");
   let $loginButton = $("#login");
@@ -23,6 +24,26 @@ $(document).ready(function () {
   let $signUpDiv = $("div.signUpDiv");
   let $loginDiv = $("div.loginDiv");
 
+  //modal trigger
+
+  $('#modal').modal();
+  $('.modal-trigger').on("click", function () {
+    console.log("modal clicked!");
+    console.log(this.uuid)
+    query = "api/events/" + this.id;
+    console.log(query);
+    $.ajax({
+      url: query,
+      type: "GET"
+    }).then(function (e) {
+      console.log(e);
+      console.log("success");
+    }).catch(function (err) {
+      if (err) throw err
+    });
+
+  });
+
   // The API object contains methods for each kind of request we'll make
   let API = {
 
@@ -37,9 +58,9 @@ $(document).ready(function () {
         .then(function (data) {
           console.log("success");
           window.location.replace("/home");
-          if(err) throw err;
+          if (err) throw err;
           refreshEvent();
-        })      
+        })
     },
 
     saveUser: function (username, name, password) {
@@ -74,6 +95,12 @@ $(document).ready(function () {
         type: "GET"
       })
     },
+    getSingleEvent: function (e) {
+      return $.ajax({
+        url: "api/events/" + id,
+        type: "GET"
+      })
+    },
 
     getUser: function (user) {
       return $.ajax({
@@ -97,7 +124,7 @@ $(document).ready(function () {
     }
   };
 
-  $('button#invite').on("click", function(event) {
+  $('button#invite').on("click", function (event) {
     $.post("api/invite");
   });
 
@@ -109,7 +136,7 @@ $(document).ready(function () {
         let $a = $("<a>")
           .text(event.eventTitle)
           .attr("href", "/events/" + event.id)
-          .attr("text","events" + `Starting At ${event.startTime}`)
+          .attr("text", "events" + `Starting At ${event.startTime}`)
 
         let $li = $("<li>")
           .attr({
@@ -251,16 +278,16 @@ $(document).ready(function () {
     })
   }
 
-  $signUpLink.on("click", function(event) {
+  $signUpLink.on("click", function (event) {
     $loginDiv.fadeOut("slow");
-    setTimeout(function() {
+    setTimeout(function () {
       $signUpDiv.fadeIn("slow");
     }, 700)
   });
 
-  $loginLink.on("click", function(event) {
+  $loginLink.on("click", function (event) {
     $signUpDiv.fadeOut("slow");
-    setTimeout(function() {
+    setTimeout(function () {
       $loginDiv.fadeIn("slow");
     }, 700)
   });

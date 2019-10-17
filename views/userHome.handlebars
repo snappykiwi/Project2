@@ -23,3 +23,56 @@
         <div id="dncalendar-next-month" class="dncalendar-next-month"></div>
     </div>
 </div>
+
+<div class="row">
+    <h3 class="col s12 center">Upcoming Events:</h3>
+</div>
+
+<div class="row">
+
+    <ul id="event-list" class="list-group col s6 offset-s3">
+        {{#each userEvents}}
+        <li data-id="{{this.id}}" class="list-group-item">
+            <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}</a>
+                <button href="#modal" class="btn right modal-trigger" id="{{this.uuid}}">Edit</button>
+                <button class=" btn right delete"><i class="material-icons">delete</i></button>
+                <button class="btn right invite" value="{{this.id}}">
+                    <i class="material-icons">person_add</i></button>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+
+<div id="modal" class="modal modal-fixed-footer">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <a href="/home">← Back To Home</a>
+                        <h5 class="card-title">Event:</h5>
+                        <p>
+                            <strong>ID</strong>: {{event.id}}</p>
+                        <p>
+                            <p>
+                                <strong>Event Name:</strong>: {{event.title}}</p>
+                            <p>
+                                <strong>Description:</strong> {{event.description}}</p>
+
+                            <h5 class="card-title">Attendee List:</h5>
+                            <ul id="user-list" class="list-group">
+                                {{#each examples}}
+                                <li data-id="{{this.id}}" class="list-group-item">
+                                    <a href="example/{{this.id}}">{{this.name}}</a>
+                                    <button class="btn btn-primary float-right invite">+</button>
+                                    <button class="btn btn-danger float-right delete">ｘ</button>
+                                </li>
+                                {{/each}}
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
