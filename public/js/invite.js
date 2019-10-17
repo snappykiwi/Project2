@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-
   let API = {
 
     createInvite: function(eventData) {
+      
       console.log(eventData)
 
       $.post("api/invite", {
@@ -22,8 +22,7 @@ $(document).ready(function() {
       });
     }
 
-  }
-
+  };
 
   $("button.invite").on("click", function(event) {
     let eventId = $(this).val();

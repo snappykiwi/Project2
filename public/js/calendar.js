@@ -5,16 +5,17 @@ $(document).ready(function () {
     $.get({
       url: "/api/events/",
       success: function (res) {
-        console.log(res);
+
         let notesArray = [];
+
         res.forEach((el) => {
-          console.log(el.eventDate);
           let eventDate = moment(el.eventDate).format("YYYY-MM-DD");
           let eventTitle = [el.eventTitle];
-          notesArray.push({"date": res.length ? eventDate : "", "note": res.length ? eventTitle : []});
+          notesArray.push({ "date": res.length ? eventDate : "", "note": res.length ? eventTitle : [] });
         });
 
         let my_calendar = $("#dncalendar-container").dnCalendar({
+          
           dataTitles: { defaultDate: 'default', today: 'Today' },
           notes: notesArray,
           showNotes: true,
@@ -27,11 +28,11 @@ $(document).ready(function () {
           showNotes: false,
           startWeek: 'sunday',
           dayClick: function (date, view) {
-            console.log("HELLOOOOO");
+            console.log("hello world");
           }
+
         });
 
-        console.log(my_calendar);
         my_calendar.build();
 
       },

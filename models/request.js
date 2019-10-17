@@ -45,15 +45,8 @@ module.exports = function (sequelize, DataTypes) {
 
     Request.hasOne(models.Event)
 
-
-    // Request.hasMany(models.Invite, {
-    //   // foreignKey: 'invitable_id',
-    //   constraints: false,
-    //   scope: {
-    //     invitable: 'request'
-    //   }
-    // });
   };
 
-  return Request
+  return Request;
+  
 };

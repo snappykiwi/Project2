@@ -38,12 +38,6 @@ module.exports = function (sequelize, DataTypes) {
 
     User.hasMany(models.Invite);
 
-    // User.belongsToMany(models.Request, {through: 'user_requests'});
-
-    // User.belongsToMany(models.Event, {through: 'user_events'});
-
-    // User.belongsToMany(models.Invite, {through: 'user_invites'});
-
   };
 
   return User;

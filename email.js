@@ -15,6 +15,7 @@ function sendEmail(email, link) {
   oauth2Client.setCredentials({
     refresh_token: process.env.refresh_token
   });
+  
   const accessToken = oauth2Client.getAccessToken();
   
   const smtpTransport = nodemailer.createTransport({
