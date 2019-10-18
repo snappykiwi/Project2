@@ -55,7 +55,7 @@ $(document).ready(function () {
         })
     },
 
-    saveRequest: function (startDate, endDate, afterTime, beforeTime, duration, reason) {
+    saveRequest: function (startDate, endDate, afterTime, beforeTime, duration, reason, friendId) {
       // console.log(username, name, password)
       $.post("/api/request", {
         dateStart: startDate,
@@ -64,7 +64,8 @@ $(document).ready(function () {
         endTime: beforeTime,
         duration: duration,
         reason: reason,
-        status: "pending"
+        status: "pending", 
+        friend: friendId
       })
         .then(function (data) {
           console.log(data);
@@ -201,9 +202,9 @@ $(document).ready(function () {
 
 
     let reqReason = $('input#req-reason').val().trim();
+    let friendId = $('select#friend').val();
 
-
-    API.saveRequest(beginDate, endDate, afterTime, beforeTime, duration, reqReason);
+    API.saveRequest(beginDate, endDate, afterTime, beforeTime, duration, reqReason, friendId);
 
   });
 

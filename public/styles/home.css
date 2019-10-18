@@ -76,6 +76,7 @@ div.input-field input#passwordTwo:focus {
 
 .btn, .btn-large, .btn-small {
     background-color: #116466;
+    margin: 3px;
 }
 
 /* button.btn {
@@ -103,6 +104,6 @@ div#dncalendar-prev-month i#prev-month{
     color: #ffffff;
 }
 
-h1 {
+h1, li.userNameNav, .gold {
     color: #A67F44;
 }
