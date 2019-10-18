@@ -15,7 +15,18 @@ $(document).ready(function () {
   let $signUpDiv = $("div.signUpDiv");
   let $loginDiv = $("div.loginDiv");
 
-  //modal trigger
+  //edit event hooks
+  let $eventEditName = $("#eventEditName");
+  let $eventEditStartTime = $("#eventEditStartTime");
+  let $eventEditDate = $("#eventEditDate");
+  let $editEventDescription = $("#eventEditDescription");
+  let $eventEditSubmit = $("#evenetEditSubmit");
+
+  
+
+
+  
+  //modal edit event 
 
   $('#modal').modal();
   $('.modal-trigger').on("click", function () {
@@ -28,11 +39,13 @@ $(document).ready(function () {
       type: "GET"
     }).then(function (e) {
       console.log(e);
-      console.log("success");
+      $eventEditName.val(e.eventTitle)
+      $eventEditStartTime.val(e.startTime);
+      $eventEditDate.val(e.eventDate);
+      $editEventDescription.val(e.description)
     }).catch(function (err) {
       if (err) throw err
     });
-
   });
 
   // The API object contains methods for each kind of request we'll make
@@ -81,6 +94,12 @@ $(document).ready(function () {
       return $.ajax({
         url: "api/users",
         type: "GET"
+      })
+    },
+    updateEvent: function (e){
+      return $.ajax({
+        url: "api/events/" + id,
+        type: "PUT"
       })
     },
 
@@ -206,6 +225,22 @@ $(document).ready(function () {
 
   };
 
+  // Handle Event Update
+
+  const submitEdit = function (e){
+    e.preventDefault();
+     updatedEvent = {
+      eventTitle: $eventEditName.val(),
+      startTime: $eventEditStartTime.val(),
+      eventDate: $eventEditDate.val(),
+      description: $editEventDescription.val(),
+    }
+
+    console.log(updatedEvent)
+
+    API.updateEvent(updateEvent.eventTitle, updateEvent.startTime, updateEvent.eventDate, updateEvent.description)
+  }
+
   // handleDeleteBtnClick is called when an event's delete button is clicked
   // Remove the event from the db and refresh the list
 
@@ -253,6 +288,8 @@ $(document).ready(function () {
   $userList.on("click", ".delete", deleteUserBtnClick)
 
   $loginButton.on("click", handleLogin);
+
+  $eventEditSubmit.on("click", submitEdit);
 
   // refreshEvent();
 
