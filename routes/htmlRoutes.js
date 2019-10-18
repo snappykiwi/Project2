@@ -37,17 +37,28 @@ module.exports = function (app) {
           status: "accepted"
         },
         include: [db.Event]
-      }).then(function(acceptedInv) {
+      }).then(function (acceptedInv) {
         console.log(acceptedInv);
 
-        res.render("userHome", {
-          msg: "Welcome Back",
-          userEvents: dbUserEvents,
-          acceptedInv: acceptedInv
+        db.User.findAll({
+          where: {
+            id: {
+              [Op.not]: req.user.id
+            }
+          }
+        }).then(function (dbUsers) {
+          console.log(dbUsers);
+
+          res.render("userHome", {
+            msg: "Welcome Back",
+            userEvents: dbUserEvents,
+            acceptedInv: acceptedInv,
+            otherUsers: dbUsers
+          })
+
         })
 
       })
-
     })
   });
 
@@ -121,7 +132,7 @@ module.exports = function (app) {
   app.get("/invite/:id/event/:eventId", function (req, res) {
     db.Invite.findOne({
       where: {
-        id: req.params.id, 
+        id: req.params.id,
         EventUuid: req.params.eventId
       },
       include: [{
@@ -135,7 +146,7 @@ module.exports = function (app) {
       }]
     }).then(function (dbInvites) {
       console.log(dbInvites.Event.dataValues.eventTitle);
-      res.render("eventInvite", {invites: dbInvites})
+      res.render("eventInvite", { invites: dbInvites })
     });
   });
 

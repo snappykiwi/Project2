@@ -1,6 +1,24 @@
 const db = require("../models");
 const passport = require("passport");
 const email = require("../email.js");
+const moment = require('moment');
+const Op = db.Sequelize.Op
+
+const getDateArray = function(start, end) {
+
+  let
+    arr = new Array(),
+    dt = new Date(start);
+
+  while (dt <= end) {
+    arr.push(new Date(dt));
+    dt.setDate(dt.getDate() + 1);
+  }
+
+  return arr;
+
+}
+
 
 module.exports = function (app) {
 
@@ -209,11 +227,101 @@ module.exports = function (app) {
       duration: req.body.duration,
       reason: req.body.reason,
       status: req.body.status,
-      UserId: req.body.friend
+      UserId: req.user.id
 
     }).then(function (dbRequest) {
-      console.log(dbRequest);
-      res.json(dbRequest);
+
+      db.Event.findAll({
+        where: {
+          UserId: req.user.id,
+          eventDate: {
+            [Op.between]: [dbRequest.dateStart, dbRequest.dateEnd]
+          },
+          [Op.or]: {
+            startTime: {
+              [Op.between]: [dbRequest.startTime, dbRequest.endTime]
+            },
+            endTime: {
+              [Op.between]: [dbRequest.startTime, dbRequest.endTime]
+            }
+          }
+        }
+      }).then(function (sendingUserEvents) {
+
+        db.Event.findAll({
+          where: {
+            UserId: req.body.friend,
+            eventDate: {
+              [Op.between]: [dbRequest.dateStart, dbRequest.dateEnd]
+            },
+            [Op.or]: {
+              startTime: {
+                [Op.between]: [dbRequest.startTime, dbRequest.endTime]
+              },
+              endTime: {
+                [Op.between]: [dbRequest.startTime, dbRequest.endTime]
+              }
+            }
+          }
+        }).then(function (recUserEvents) {
+
+          console.log(`Sending Events: ${sendingUserEvents}`);
+          console.log(`Receiving Events: ${recUserEvents}`);
+          let allEvents = [...sendingUserEvents, ...recUserEvents];
+          console.log(allEvents);
+
+          let dateRange = getDateArray(dbRequest.dateStart, dbRequest.dateEnd);
+
+          console.log(dateRange);
+
+          let endTm = moment(dbRequest.startTime).add(dbRequest.duration, 'hours');
+          console.log(endTm)
+
+          function inRange (event) {
+            return event.eventDate === el
+          }
+
+          dateRange.forEach(el => {
+
+            const foundDate = allEvents.find( ({date}) => date === el)
+
+            console.log(foundDate);
+            if(foundDate == undefined) {
+
+              db.Invite.create({
+
+                date: el,
+                startTime: dbRequest.startTime,
+                endTime: dbRequest.endTime,
+                status: "pending",
+                RequestUuid: dbRequest.uuid,
+                UserId: req.body.friend
+              })
+                .then(function (inviteData) {
+                  console.log(inviteData);
+                  db.User.findOne({
+                    where: {
+                      id: inviteData.UserId
+                    }
+                  }).then(function (userData) {
+                    // email(userData.username, `localhost:3000/invite/${userData.id}/request/${inviteData.RequestUuid}`);
+                  })
+                });
+
+            }
+
+          })
+
+          allEvents.forEach(el => {
+            console.log(el.eventDate);
+
+          })
+        })
+
+        // console.log(`friend: ${req.body.friend}`)
+        // console.log(dbRequest);
+        // res.json(dbRequest);
+      })
     });
   });
 
