@@ -11,7 +11,7 @@ body {
 }
 
 body#home {
-    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") repeat-y;
+    background: url("/images/andrik-langfield-0rTCXZM7Xfo-unsplash.jpg") no-repeat;
     background-size: 50% auto;
     height: 100%;
 }
@@ -86,6 +86,10 @@ button.btn:hover {
     background-color: #0c4546;
 }
 
+.selected {
+    background-color: #072a2b;
+  }
+
 span#loginLink, span#signUpLink {
     cursor: pointer;
     color:  #A67F44;
@@ -97,4 +101,8 @@ div.signUpDiv {
 
 div#dncalendar-prev-month i#prev-month{
     color: #ffffff;
+}
+
+h1 {
+    color: #A67F44;
 }

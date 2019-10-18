@@ -11,8 +11,7 @@ const express     = require("express"),
       { google }  = require("googleapis"),
       OAuth2      = google.auth.OAuth2;
 
-
-//requiring routes
+// requiring models route
 const db = require("./models");
 
 let app = express();
@@ -20,8 +19,6 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -31,42 +28,6 @@ app.use(session({
   saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// const oauth2Client = new OAuth2(
-//   process.env.GOOGLE_CLIENT_ID,
-//   process.env.GOOGLE_CLIENT_SECRET,
-//   "https://developers.google.com/oauthplayground"
-// );
-
-// oauth2Client.setCredentials({
-//   refresh_token: process.env.refresh_token
-// });
-// const accessToken = oauth2Client.getAccessToken();
-
-// const smtpTransport = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     type: "OAuth2",
-//     user: "schedulingapp742@gmail.com",
-//     clientId: process.env.GOOGLE_CLIENT_ID,
-//     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     refreshToken: process.env.refresh_token,
-//     accessToken: accessToken
-//   }
-// });
-
-// const mailOptions = {
-//   from: "schedulingapp742@gmail.com",
-//   to: "schedulingapp742@gmail.com",
-//   subject: "This is a test Email with OAuth",
-//   generateTextFromHTML: true,
-//   html: "<b>test</b>"
-// };
-
-// smtpTransport.sendMail(mailOptions, (error, response) => {
-//   error ? console.log(error) : console.log(response);
-//   smtpTransport.close();
-// });
 
 // Handlebars
 app.engine(
@@ -81,7 +42,7 @@ app.set("view engine", "handlebars");
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-var syncOptions = { force: false };
+const syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`

@@ -12,7 +12,13 @@ div.nav-wrapper {
 
 p.section-title {
   font-size: 2em;
+  margin-bottom: 1em;
   font-weight: 600;
+  color: #c4c4c4;
+}
+
+p.event-name {
+  font-size: 1.5em;
 }
 
 div.time {
@@ -26,4 +32,18 @@ div.timepicker-digital-display {
 .datepicker, .timepicker {
   margin-top: 30px;
   width: 97%;
+}
+
+
+/* Styling for Event Page */
+p.reason {
+  margin-bottom: 1.95em;
+}
+
+div#requestEvent {
+  display: none;
+}
+
+button.selected {
+  background-color: #0c4546;
 }

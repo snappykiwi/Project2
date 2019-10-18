@@ -20,20 +20,18 @@
 
   <div>
 
-    {{#each invites}}
     <div class="row">
 
-      <h4 class="col s12">{{this.User.name}} has requested a meetup</h4>
-      <p class="col s12">{{this.Event.eventTitle}}</p>
-      <p class="col s12">From {{this.startTime}} to {{this.endTime}}</p>
-      <p class="col s12">On {{this.date}}</p>
-      <p class="col s12">For {{this.Event.description}}</p>
+      <h4 class="col s12">{{invites.User.dataValues.name}} has asked if you would like to join</h4>
+      <p class="col s12">{{invites.Event.dataValues.eventTitle}}</p>
+      <p class="col s12">From {{invites.dataValues.startTime}} to {{invites.dataValues.endTime}}</p>
+      <p class="col s12">On {{invites.dataValues.date}}</p>
+      <p class="col s12">For {{invites.Event.description}}</p>
 
-      <button class="{{id}}, accept btn" value={{id}} id={{id}}-accept><i class="material-icons prefix">event_available</i></button>
-      <button class="{{id}}, decline btn" value={{id}} id={{id}}-decline><i class="material-icons prefix">event_busy</i></button>
+      <button class="{{invites.id}}, accept btn" value={{invites.id}} id={{invites.id}}-accept><i class="material-icons prefix">event_available</i></button>
+      <button class="{{invites.id}}, decline btn" value={{invites.id}} id={{invites.id}}-decline><i class="material-icons prefix">event_busy</i></button>
     </div>
 
-    {{/each}}
 
   </div>
 
