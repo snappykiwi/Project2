@@ -152,7 +152,7 @@ module.exports = function (app) {
       req.body,
       {
         where: {
-          id: req.body.id
+          uuid: req.params.id
         }
       }).then(function(dbEvent){
         res.json(dbEvent);

@@ -20,10 +20,10 @@ $(document).ready(function () {
   let $eventEditStartTime = $("#eventEditStartTime");
   let $eventEditDate = $("#eventEditDate");
   let $editEventDescription = $("#eventEditDescription");
-  let $eventEditSubmit = $("#evenetEditSubmit");
+  let $eventEditSubmit = $("#eventEditSubmit");
 
   
-
+  let currentEditId;
 
   
   //modal edit event 
@@ -96,10 +96,17 @@ $(document).ready(function () {
         type: "GET"
       })
     },
-    updateEvent: function (e){
+    updateEvent: function (eventTitle, startTime, eventDate, description){
       return $.ajax({
-        url: "api/events/" + id,
-        type: "PUT"
+        url: "api/events/" + currentEditId,
+        type: "PUT",
+        data: {
+          eventTitle: eventTitle,
+          startTime: startTime,
+          endTime: startTime,
+          eventDate: eventDate,
+          description: description
+        }
       })
     },
 
@@ -228,6 +235,9 @@ $(document).ready(function () {
   // Handle Event Update
 
   const submitEdit = function (e){
+    console.log(e);
+    console.log(e.id);
+
     e.preventDefault();
      updatedEvent = {
       eventTitle: $eventEditName.val(),
@@ -238,7 +248,7 @@ $(document).ready(function () {
 
     console.log(updatedEvent)
 
-    API.updateEvent(updateEvent.eventTitle, updateEvent.startTime, updateEvent.eventDate, updateEvent.description)
+    API.updateEvent(updatedEvent.eventTitle, updatedEvent.startTime, updatedEvent.eventDate, updatedEvent.description)
   }
 
   // handleDeleteBtnClick is called when an event's delete button is clicked
@@ -289,7 +299,14 @@ $(document).ready(function () {
 
   $loginButton.on("click", handleLogin);
 
-  $eventEditSubmit.on("click", submitEdit);
+  $('button.modal-trigger').on("click", function(event) {
+    console.log(event);
+    currentEditId = event.currentTarget.id;
+  });
+
+  $eventEditSubmit.on("click", function( event ) {
+    submitEdit(event)
+    });
 
   // refreshEvent();
 
