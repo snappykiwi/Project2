@@ -25,41 +25,33 @@ module.exports = function (app) {
 
   // user homepage
   app.get("/home", middleware.isLoggedIn, function (req, res) {
+    let currentUserId = req.user.id;
+
     db.Event.findAll({
       where: {
-        UserId: req.user.id
-      }
-    }).then(function (dbUserEvents) {
-      console.log(dbUserEvents);
-
-      db.Invite.findAll({
+        [Op.or]: [{
+          UserId: currentUserId
+        }]
+      },
+      order : ["eventDate"],         
+      include : [{
+        model: db.Invite,
         where: {
-          status: "accepted"
+          UserId: currentUserId,
+          status: 'accepted'
         },
-        include: [db.Event]
-      }).then(function (acceptedInv) {
-        console.log(acceptedInv);
-
-        db.User.findAll({
-          where: {
-            id: {
-              [Op.not]: req.user.id
-            }
-          }
-        }).then(function (dbUsers) {
-          console.log(dbUsers);
-
-          res.render("userHome", {
-            msg: "Welcome Back",
-            userEvents: dbUserEvents,
-            acceptedInv: acceptedInv,
-            otherUsers: dbUsers
-          })
-
-        })
-
-      })
+        required: false
+      }]
     })
+      .then(function(userEvt){
+        
+        res.render("userHome", {
+          msg: "Welcome Back",
+          userEvents: userEvt,
+          // acceptedInv: acceptedEvt
+        })     
+    });
+
   });
 
   // create event page
