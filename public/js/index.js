@@ -103,7 +103,6 @@ $(document).ready(function () {
         data: {
           eventTitle: eventTitle,
           startTime: startTime,
-          endTime: startTime,
           eventDate: eventDate,
           description: description
         }
@@ -256,12 +255,13 @@ $(document).ready(function () {
 
 
   let handleEventBtnClick = function () {
+    console.log($(this))
     let idToDelete = $(this)
       .parent()
       .attr("data-id")
 
     API.deleteEvent(idToDelete).then(function () {
-      refreshEvent();
+      // location.reload();
     })
   };
 

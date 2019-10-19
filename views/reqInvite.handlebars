@@ -1,0 +1,49 @@
+<nav>
+  <div class="nav-wrapper">
+    <ul id="nav-mobile" class="hide-on-med-and-down">
+      <li class="left"><a href="/home">View Calendar</a></li>
+      <li class="left"><a href="/request">New Event</a></li>
+      <li class="left active"><a href="/inbox">Inbox</a></li>
+      <li class="right"><a href="/logout">Log Out</a></li>
+    </ul>
+    <ul id="nav-mobile" class="hide-on-large-only">
+      <li class="left"><a href="/home"><i class="material-icons prefix">home</i></a></li>
+      <li class="left"><a href="/request"><i class="material-icons prefix">event</i></a></li>
+      <li class="left active"><a href="/inbox"><i class="material-icons prefix">mail_outline</i></a></li>
+      <li class="right"><a href="/logout"><i class="material-icons prefix">directions_walk</i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="container">
+
+  <div class="row">
+    <h1>A Request for You:</h1>
+  </div>
+
+  <div>
+    <h4>{{request.User.dataValues.name}}</h4>
+    <p>Would like to get together for: {{request.reason}} </p>
+
+    <h4>Here are some times when you are both free:</h4>
+
+    <p>choose one from below to accept</p>
+
+    {{#each invites}}
+    <div class="row">
+
+      <p class="col s12">At {{this.startTime}}</p>
+      <p class="col s12">On {{this.date}}</p>
+
+      <button class="{{id}}, accept btn" value={{id}} id={{id}}-accept><i
+          class="material-icons prefix">event_available</i></button>
+      <button class="{{id}}, decline btn" value={{id}} id={{id}}-decline><i
+          class="material-icons prefix">event_busy</i></button>
+    </div>
+
+    {{/each}}
+
+  </div>
+
+</div>
