@@ -112,6 +112,34 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/api/events/user", function(req, res) {
+    
+    let currentUserId = req.user.id;
+
+    db.Event.findAll({
+      where: {
+        [Op.or]: [{
+          UserId: currentUserId
+        }]
+      },
+      order : ["eventDate"],         
+      include : [{
+        model: db.Invite,
+        where: {
+          UserId: currentUserId,
+          status: 'accepted'
+        },
+        required: false
+      }]
+    })
+    .then(function (acceptedEvt) { 
+
+      res.json(acceptedEvt);
+
+    });    
+
+  })
+
   app.get("/api/events/:id", function (req, res) {
     db.Event.findOne({
       where: {
