@@ -4,7 +4,7 @@ const email = require("../email.js");
 const moment = require('moment');
 const Op = db.Sequelize.Op
 
-const getDateArray = function(start, end) {
+const getDateArray = function (start, end) {
 
   let
     arr = new Array(),
@@ -147,14 +147,14 @@ module.exports = function (app) {
 
   //update event
 
-  app.put("/api/events/:id", function(req,res){
+  app.put("/api/events/:id", function (req, res) {
     db.Event.update(
       req.body,
       {
         where: {
           uuid: req.params.id
         }
-      }).then(function(dbEvent){
+      }).then(function (dbEvent) {
         res.json(dbEvent);
       })
   })
@@ -270,7 +270,19 @@ module.exports = function (app) {
             },
             endTime: {
               [Op.between]: [dbRequest.startTime, dbRequest.endTime]
-            }
+            },
+            // [Op.and]: [
+            //   {
+            //     startTime: {
+            //       [Op.lte]: dbRequest.startTime
+            //     },
+            //   },
+            //   {
+            //     endTime: {
+            //       [Op.gte]: dbRequest.endTime
+            //     },
+            //   }
+            // ]
           }
         }
       }).then(function (sendingUserEvents) {
@@ -287,7 +299,19 @@ module.exports = function (app) {
               },
               endTime: {
                 [Op.between]: [dbRequest.startTime, dbRequest.endTime]
-              }
+              },
+              // [Op.and]: [
+              //   {
+              //     startTime: {
+              //       [Op.lte]: dbRequest.startTime
+              //     },
+              //   },
+              //   {
+              //     endTime: {
+              //       [Op.gte]: dbRequest.endTime
+              //     },
+              //   }
+              // ]
             }
           }
         }).then(function (recUserEvents) {
@@ -295,25 +319,70 @@ module.exports = function (app) {
           console.log(`Sending Events: ${sendingUserEvents}`);
           console.log(`Receiving Events: ${recUserEvents}`);
           let allEvents = [...sendingUserEvents, ...recUserEvents];
-          console.log(allEvents);
 
           let dateRange = getDateArray(dbRequest.dateStart, dbRequest.dateEnd);
 
-          console.log(dateRange);
 
-          let endTm = moment(dbRequest.startTime).add(dbRequest.duration, 'hours');
-          console.log(endTm)
+          console.log(`StartTime:: ${dbRequest.startTime}`)
+          console.log(`Duration:: ${dbRequest.duration}`)
 
-          function inRange (event) {
-            return event.eventDate === el
-          }
+
+
+          // let endTm = moment(dbRequest.startTime).add(parseInt(dbRequest.duration), 'hours');
+          // console.log(`endTm: ${endTm}`)
+
+          let userData;
+          let inviteData;
 
           dateRange.forEach(el => {
 
-            const foundDate = allEvents.find( ({date}) => date === el)
+            let foundDate = [];
 
-            console.log(foundDate);
-            if(foundDate == undefined) {
+            if (allEvents[0]) {
+
+              allEvents.forEach(event => {
+
+                console.log(`eventDate: ${event.eventDate}`);
+                console.log(`el: ${el}`);
+
+
+                if (moment(event.eventDate).isSame(el, 'day')) {
+
+                  console.log("match");
+                  foundDate.push(el);
+                  console.log(foundDate);
+                }
+                else {
+
+                  console.log("not a match");
+
+                  db.Invite.create({
+
+                    date: el,
+                    startTime: dbRequest.startTime,
+                    endTime: dbRequest.endTime,
+                    status: "pending",
+                    RequestUuid: dbRequest.uuid,
+                    UserId: req.body.friend
+                  })
+                    .then(function (inviteData) {
+
+                      inviteData = inviteData
+                      db.User.findOne({
+                        where: {
+                          id: inviteData.UserId
+                        }
+                      }).then(function (userData) {
+
+                        email(userData.username, `localhost:3000/invite/${userData.id}/request/${inviteData.RequestUuid}`);
+
+                      })
+                    });
+
+                }
+              })
+            }
+            else {
 
               db.Invite.create({
 
@@ -325,29 +394,28 @@ module.exports = function (app) {
                 UserId: req.body.friend
               })
                 .then(function (inviteData) {
-                  console.log(inviteData);
+    
+                  inviteData = inviteData
                   db.User.findOne({
                     where: {
                       id: inviteData.UserId
                     }
                   }).then(function (userData) {
-                    // email(userData.username, `localhost:3000/invite/${userData.id}/request/${inviteData.RequestUuid}`);
+    
+                    email(userData.username, `localhost:3000/invite/${userData.id}/request/${inviteData.RequestUuid}`);
+    
                   })
                 });
 
+
             }
 
-          })
-
-          allEvents.forEach(el => {
-            console.log(el.eventDate);
 
           })
+
+
         })
 
-        // console.log(`friend: ${req.body.friend}`)
-        // console.log(dbRequest);
-        // res.json(dbRequest);
       })
     });
   });

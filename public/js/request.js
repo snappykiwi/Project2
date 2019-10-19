@@ -69,15 +69,19 @@ $(document).ready(function () {
       })
         .then(function (data) {
           console.log(data);
-        })
-        .catch(console.log("error"));
-    },
+          window.location.replace("/home");
 
+          if(err) throw err;
+        })
+    },
   }
 
 
 
+
   API.getUsers();
+
+  // INITIALIZING TIME PICKERS/DATE PICKERS/DROP DOWNS
 
   // initialize materialize drop down menu for request
   $('select').formSelect();
@@ -97,11 +101,9 @@ $(document).ready(function () {
   createDate.setMin(new Date(today));
 
 
-
-
   let timeSelected = $('input.timepicker').timepicker({
     showClearBtn: true,
-    // twelveHour: false,
+    twelveHour: false,
     onSelect: function (hour, minute) {
 
       console.log(hour);
@@ -109,6 +111,7 @@ $(document).ready(function () {
     }
   });
 
+  
 
   // Showing/Hiding Create/Request Divs
   $createSwitch.on("click", function (event) {
@@ -166,6 +169,7 @@ $(document).ready(function () {
 
   });
 
+
   $('select#dur-hours').on("change", function (event) {
     hourDur = $(this).val();
     console.log(hourDur);
@@ -197,6 +201,7 @@ $(document).ready(function () {
 
     beforeTime = moment(beforeTime).format('HHmmss');
     afterTime = moment(afterTime).format('HHmmss');
+    
 
     let duration = parseInt(hourDur) + parseFloat(minDur);
 
@@ -228,6 +233,8 @@ $(document).ready(function () {
 
     startTime = moment(startTime).format('HHmmss');
     endTime = moment(endTime).format('HHmmss');
+
+    eventDate += startTime;
     
     let eventData = {
       eventTitle: $eventName.val().trim(),
