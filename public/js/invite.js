@@ -1,19 +1,25 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   let API = {
 
-    createInvite: function(eventData) {
-      
+    createInvite: function (eventData, friendName, eventId) {
+
       console.log(eventData)
+      console.log(friendName);
 
       $.post("api/invite", {
         date: eventData.eventDate,
         startTime: eventData.startTime,
         endTime: eventData.endTime,
-        eventId: eventData.uuid
+        eventId: eventData.uuid,
+        friendName: friendName
       }).then((response) => {
 
         console.log(response);
+        $(`p.invite-success-${eventId}`).fadeIn();
+        setTimeout(function () {
+          $(`p.invite-success-${eventId}`).fadeOut();
+        }, 500)
 
       }, (error) => {
 
@@ -22,9 +28,9 @@ $(document).ready(function() {
       });
     },
 
-    updateInvite: function(inviteId, inviteStatus) {
+    updateInvite: function (inviteId, inviteStatus) {
 
-      console.log(inviteId, status);
+      console.log(inviteId, inviteStatus);
 
       return $.ajax({
         url: `api/invite/${inviteId}`,
@@ -38,20 +44,32 @@ $(document).ready(function() {
 
   };
 
-  $("button.invite").on("click", function(event) {
-    console.log(event)
+  $("button.invite-trigger").on("click", function (event) {
+    $(`.event-invite-${$(this).val()}`).fadeIn();
+  })
+
+  $("button.invite").on("click", function (event) {
     let eventId = $(this).val();
 
-    console.log($(this).val());
-    $.get(`api/events/${eventId}`).then(function(response) {
-      console.log(response);
+    let friend = $(`input.event-invite-${eventId}`).val().trim()
+    console.log(friend);
 
-      API.createInvite(response);
+    $(`.event-invite-${eventId}`).fadeOut();
+
+    console.log(event)
+
+    console.log(eventId);
+    $.get(`api/events/${eventId}`).then(function (response) {
+      console.log(response, friend);
+
+      API.createInvite(response, friend, eventId);
 
     });
+    $(".event-invite-input").hide();
+
   });
 
-  $("button.accept").on("click", function(event) {
+  $("button.accept").on("click", function (event) {
 
     let inviteId = $(this).val();
     console.log(inviteId);
@@ -63,7 +81,7 @@ $(document).ready(function() {
 
   });
 
-  $("button.decline").on("click", function(event) {
+  $("button.decline").on("click", function (event) {
 
     let inviteId = $(this).val();
     console.log(inviteId);
