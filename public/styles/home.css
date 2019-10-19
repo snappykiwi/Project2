@@ -104,3 +104,17 @@ div#dncalendar-prev-month i#prev-month{
 h1, li.userNameNav, .gold {
     color: #A67F44;
 }
+
+p.modal-date {
+    margin-bottom: 2.5em;
+    font-size: 2em;
+}
+
+.event-invite {
+    display: none;
+    margin-bottom: 0;
+}
+
+.invite-msg {
+    display: none;
+}

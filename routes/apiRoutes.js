@@ -112,8 +112,8 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/events/user", function(req, res) {
-    
+  app.get("/api/events/user", function (req, res) {
+
     let currentUserId = req.user.id;
 
     db.Event.findAll({
@@ -122,8 +122,8 @@ module.exports = function (app) {
           UserId: currentUserId
         }]
       },
-      order : ["eventDate"],         
-      include : [{
+      order: ["eventDate"],
+      include: [{
         model: db.Invite,
         where: {
           UserId: currentUserId,
@@ -132,11 +132,11 @@ module.exports = function (app) {
         required: false
       }]
     })
-    .then(function (acceptedEvt) { 
+      .then(function (acceptedEvt) {
 
-      res.json(acceptedEvt);
+        res.json(acceptedEvt);
 
-    });    
+      });
 
   })
 
@@ -241,24 +241,31 @@ module.exports = function (app) {
   });
 
   app.post("/api/invite", function (req, res) {
-    db.Invite.create({
-      date: req.body.date,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-      status: "pending",
-      EventUuid: req.body.eventId,
-      UserId: req.user.id
+    db.User.findOne({
+      where: {
+        username: req.body.friendName
+      }
+    }).then(function (dbUser) {
+
+      db.Invite.create({
+        date: req.body.date,
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
+        status: "pending",
+        EventUuid: req.body.eventId,
+        UserId: dbUser.id
+      })
+        .then(function (inviteData) {
+          console.log(inviteData);
+          db.User.findOne({
+            where: {
+              id: inviteData.UserId
+            }
+          }).then(function (userData) {
+            email(userData.username, `localhost:3000/invite/${inviteData.id}/event/${inviteData.EventUuid}`);
+          })
+        });
     })
-      .then(function (inviteData) {
-        console.log(inviteData);
-        db.User.findOne({
-          where: {
-            id: inviteData.UserId
-          }
-        }).then(function (userData) {
-          email(userData.username, `localhost:3000/invite/${inviteData.id}/event/${inviteData.EventUuid}`);
-        })
-      });
   });
 
   app.put("/api/invite/:id", function (req, res) {
@@ -398,16 +405,16 @@ module.exports = function (app) {
                 UserId: req.body.friend
               })
                 .then(function (inviteData) {
-    
+
                   inviteData = inviteData
                   db.User.findOne({
                     where: {
                       id: inviteData.UserId
                     }
                   }).then(function (userData) {
-    
+
                     email(userData.username, `localhost:3000/invite/${userData.id}/request/${inviteData.RequestUuid}`);
-    
+
                   })
                 });
 

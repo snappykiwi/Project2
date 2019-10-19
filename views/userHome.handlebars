@@ -30,20 +30,27 @@
 
     <ul id="event-list" class="list-group col s12 m6 offset-m3">
         {{#each userEvents}}
-        <li data-id="{{this.uuid}}" class="list-group-item">
-            <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}</p>
-                    {{!-- <select id="invFriend">
-                        {{#each otherUsers}}
-                        {{> requests/user-block }}
-                        {{/each}}
-                    </select>
-                    <label>Friend To Invite</label> --}}
-                <button href="#modal" class="btn right modal-trigger" id="{{this.uuid}}"><i
-                        class="material-icons">edit</i></button>
-                <button class=" btn right delete"><i class="material-icons">delete</i></button>
-                <button class="btn right invite" value="{{this.uuid}}">
-                    <i class="material-icons">person_add</i></button>
-        </li>
+        <div class="row">
+
+            <li data-id="{{this.uuid}}" class="list-group-item col s12">
+                <p class="event-name" id="eventTitle-{{this.id}}">{{this.eventTitle}}
+                    <button class="btn right invite-trigger" value="{{this.uuid}}">
+                        <i class="material-icons">person_add</i></button>
+
+                    <button href="#modal" class="btn right modal-trigger" id="{{this.uuid}}"><i
+                            class="material-icons">edit</i></button>
+                </p>
+                <p class="invite-msg invite-success-{{this.uuid}}">Invite Sent</p>
+                <p class="invite-msg invite-error-{{this.uuid}}">Something went wrong. Please try again</p>
+                <p class="col s12 center event-invite event-invite-{{this.uuid}}">Who would you like to invite to
+                    this event?</p>
+                <p class="col s12 center event-invite event-invite-{{this.uuid}}">Please enter their email</p>
+                <input class="col s6 offset-s3 event-invite event-invite-{{this.uuid}}" type="text">
+                <button class="btn right event-invite event-invite-{{this.uuid}} invite" value="{{this.uuid}}">
+                    <i class="material-icons">done</i></button>
+            </li>
+        </div>
+
         {{/each}}
     </ul>
 </div>
@@ -52,7 +59,7 @@
 
     <div class="container">
         <br>
-        <h1 class= "center">Edit Event</h1>
+        <h1 class="center">Edit Event</h1>
         <form class="clearfix mb-4" action="POST">
             <div class="form-group">
                 <label for="event-name">Name of the event:</label>
@@ -68,6 +75,9 @@
                 <textarea class="form-control" id="eventEditDescription" aria-describedby="event-description"
                     placeholder="event-description"></textarea>
             </div>
+
+            {{!-- <button value="{{this.uuid}}" class=" btn right delete"><i class="material-icons">delete</i></button> --}}
+
             <button id="eventEditSubmit" class="btn btn-primary right">Submit</button>
         </form>
     </div>

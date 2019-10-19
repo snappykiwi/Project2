@@ -36,7 +36,7 @@ $(document).ready(function () {
             $.each(notesArray, function(){
               console.log(this);
               if (moment(moment(this.date).toDate()).isSame(moment(date), 'day')){              
-                html += '<li><h2>' + this.note + '</h2><p>' + this.date + '</p></li>';
+                html += `<li><h2 class="modal-header center gold">${this.note}</h2><p class="modal-date center">${this.date}</p></li>`;
                 console.log(html);
               }
             });
