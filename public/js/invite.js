@@ -24,7 +24,7 @@ $(document).ready(function() {
 
     updateInvite: function(inviteId, inviteStatus) {
 
-      console.log(inviteId, status);
+      console.log(inviteId, inviteStatus);
 
       return $.ajax({
         url: `api/invite/${inviteId}`,

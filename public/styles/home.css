@@ -79,9 +79,6 @@ div.input-field input#passwordTwo:focus {
     margin: 3px;
 }
 
-/* button.btn {
-    background-color: #BEA177;
-} */
 
 button.btn:hover {
     background-color: #0c4546;

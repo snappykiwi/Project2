@@ -298,19 +298,7 @@ module.exports = function (app) {
             },
             endTime: {
               [Op.between]: [dbRequest.startTime, dbRequest.endTime]
-            },
-            // [Op.and]: [
-            //   {
-            //     startTime: {
-            //       [Op.lte]: dbRequest.startTime
-            //     },
-            //   },
-            //   {
-            //     endTime: {
-            //       [Op.gte]: dbRequest.endTime
-            //     },
-            //   }
-            // ]
+            }
           }
         }
       }).then(function (sendingUserEvents) {
@@ -327,19 +315,7 @@ module.exports = function (app) {
               },
               endTime: {
                 [Op.between]: [dbRequest.startTime, dbRequest.endTime]
-              },
-              // [Op.and]: [
-              //   {
-              //     startTime: {
-              //       [Op.lte]: dbRequest.startTime
-              //     },
-              //   },
-              //   {
-              //     endTime: {
-              //       [Op.gte]: dbRequest.endTime
-              //     },
-              //   }
-              // ]
+              }
             }
           }
         }).then(function (recUserEvents) {

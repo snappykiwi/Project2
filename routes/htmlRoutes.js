@@ -142,6 +142,32 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/invite/:userId/request/:requestId", function(req, res) {
+    db.Invite.findAll({
+      where: {
+        UserId: req.params.userId,
+        RequestUuid: req.params.requestId
+      },
+      include: [{
+        model: db.Request,
+        include: [db.User]
+      }, {
+        model: db.User
+      }, {
+        model: db.Event,
+        include: [db.User]
+      }] 
+    }).then(function (dbInvites) {
+      console.log(dbInvites[0].Request.User);
+      // console.log(dbInvites);
+
+      res.render("reqInvite", { 
+        invites: dbInvites, 
+        request: dbInvites[0].Request
+      } )
+    });
+  });
+
   // Render 404 page for any unmatched routes
   app.get("*", function (req, res) {
     res.render("404");
