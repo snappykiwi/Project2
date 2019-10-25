@@ -3,7 +3,7 @@ $(document).ready(function () {
   if (window.location.href.split("/").includes("home")) {
 
     $.get({
-      url: "/api/events/",
+      url: "/api/events/user",
       success: function (res) {
 
         let notesArray = [];
@@ -11,7 +11,9 @@ $(document).ready(function () {
         res.forEach((el) => {
           let eventDate = moment(el.eventDate).format("YYYY-MM-DD");
           let eventTitle = [el.eventTitle];
-          notesArray.push({ "date": res.length ? eventDate : "", "note": res.length ? eventTitle : [] });
+          notesArray.push({ 
+            "date": res.length ? eventDate : "", 
+            "note": res.length ? eventTitle : [] });
         });
 
         let my_calendar = $("#dncalendar-container").dnCalendar({
@@ -28,7 +30,22 @@ $(document).ready(function () {
           showNotes: false,
           startWeek: 'sunday',
           dayClick: function (date, view) {
-            console.log("hello world");
+            console.log("hello world", date);
+
+            let html = '';
+            $.each(notesArray, function(){
+              console.log(this);
+              if (moment(moment(this.date).toDate()).isSame(moment(date), 'day')){              
+                html += `<li><h2 class="modal-header center gold">${this.note}</h2><p class="modal-date center">${this.date}</p></li>`;
+                console.log(html);
+              }
+            });
+            
+            $('#eventListHtmlPlaceholder').html('<ul>'+html+'</ul>');    
+            
+            // open modal after html is built
+            $('#eventListModal').modal();            
+            $('#eventListModal').modal('open');
           }
 
         });

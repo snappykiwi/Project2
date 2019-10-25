@@ -76,11 +76,9 @@ div.input-field input#passwordTwo:focus {
 
 .btn, .btn-large, .btn-small {
     background-color: #116466;
+    margin: 3px;
 }
 
-/* button.btn {
-    background-color: #BEA177;
-} */
 
 button.btn:hover {
     background-color: #0c4546;
@@ -103,6 +101,20 @@ div#dncalendar-prev-month i#prev-month{
     color: #ffffff;
 }
 
-h1 {
+h1, li.userNameNav, .gold {
     color: #A67F44;
+}
+
+p.modal-date {
+    margin-bottom: 2.5em;
+    font-size: 2em;
+}
+
+.event-invite {
+    display: none;
+    margin-bottom: 0;
+}
+
+.invite-msg {
+    display: none;
 }

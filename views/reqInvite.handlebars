@@ -19,23 +19,30 @@
 <div class="container">
 
   <div class="row">
-    <h1>You're Invited!</h1>
+    <h1>A Request for You:</h1>
   </div>
 
   <div>
+    <h4>{{request.User.dataValues.name}}</h4>
+    <p>Would like to get together for: {{request.reason}} </p>
 
+    <h4>Here are some times when you are both free:</h4>
+
+    <p>choose one from below to accept</p>
+
+    {{#each invites}}
     <div class="row">
 
-      <h4 class="col s12">{{invites.User.dataValues.name}} has asked if you would like to join</h4>
-      <p class="col s12">{{invites.Event.dataValues.eventTitle}}</p>
-      <p class="col s12">From {{invites.dataValues.startTime}} to {{invites.dataValues.endTime}}</p>
-      <p class="col s12">On {{invites.dataValues.date}}</p>
-      <p class="col s12">For {{invites.Event.description}}</p>
+      <p class="col s12">At {{this.startTime}}</p>
+      <p class="col s12">On {{this.date}}</p>
 
-      <button class="{{invites.id}}, accept btn" value={{invites.id}} id={{invites.id}}-accept><i class="material-icons prefix">event_available</i></button>
-      <button class="{{invites.id}}, decline btn" value={{invites.id}} id={{invites.id}}-decline><i class="material-icons prefix">event_busy</i></button>
+      <button class="{{id}}, accept btn" value={{id}} id={{id}}-accept><i
+          class="material-icons prefix">event_available</i></button>
+      <button class="{{id}}, decline btn" value={{id}} id={{id}}-decline><i
+          class="material-icons prefix">event_busy</i></button>
     </div>
 
+    {{/each}}
 
   </div>
 

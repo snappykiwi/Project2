@@ -15,7 +15,18 @@ $(document).ready(function () {
   let $signUpDiv = $("div.signUpDiv");
   let $loginDiv = $("div.loginDiv");
 
-  //modal trigger
+  //edit event hooks
+  let $eventEditName = $("#eventEditName");
+  let $eventEditStartTime = $("#eventEditStartTime");
+  let $eventEditDate = $("#eventEditDate");
+  let $editEventDescription = $("#eventEditDescription");
+  let $eventEditSubmit = $("#eventEditSubmit");
+
+  
+  let currentEditId;
+
+  
+  //modal edit event 
 
   $('#modal').modal();
   $('.modal-trigger').on("click", function () {
@@ -28,11 +39,13 @@ $(document).ready(function () {
       type: "GET"
     }).then(function (e) {
       console.log(e);
-      console.log("success");
+      $eventEditName.val(e.eventTitle)
+      $eventEditStartTime.val(e.startTime);
+      $eventEditDate.val(e.eventDate);
+      $editEventDescription.val(e.description)
     }).catch(function (err) {
       if (err) throw err
     });
-
   });
 
   // The API object contains methods for each kind of request we'll make
@@ -81,6 +94,18 @@ $(document).ready(function () {
       return $.ajax({
         url: "api/users",
         type: "GET"
+      })
+    },
+    updateEvent: function (eventTitle, startTime, eventDate, description){
+      return $.ajax({
+        url: "api/events/" + currentEditId,
+        type: "PUT",
+        data: {
+          eventTitle: eventTitle,
+          startTime: startTime,
+          eventDate: eventDate,
+          description: description
+        }
       })
     },
 
@@ -213,17 +238,37 @@ $(document).ready(function () {
 
   };
 
+  // Handle Event Update
+
+  const submitEdit = function (e){
+    console.log(e);
+    console.log(e.id);
+
+    e.preventDefault();
+     updatedEvent = {
+      eventTitle: $eventEditName.val(),
+      startTime: $eventEditStartTime.val(),
+      eventDate: $eventEditDate.val(),
+      description: $editEventDescription.val(),
+    }
+
+    console.log(updatedEvent)
+
+    API.updateEvent(updatedEvent.eventTitle, updatedEvent.startTime, updatedEvent.eventDate, updatedEvent.description)
+  }
+
   // handleDeleteBtnClick is called when an event's delete button is clicked
   // Remove the event from the db and refresh the list
 
 
   let handleEventBtnClick = function () {
+    console.log($(this))
     let idToDelete = $(this)
       .parent()
       .attr("data-id")
 
     API.deleteEvent(idToDelete).then(function () {
-      refreshEvent();
+      // location.reload();
     })
   };
 
@@ -265,6 +310,15 @@ $(document).ready(function () {
   $userList.on("click", ".delete", deleteUserBtnClick)
 
   $loginButton.on("click", handleLogin);
+
+  $('button.modal-trigger').on("click", function(event) {
+    console.log(event);
+    currentEditId = event.currentTarget.id;
+  });
+
+  $eventEditSubmit.on("click", function( event ) {
+    submitEdit(event)
+    });
 
   // refreshEvent();
 

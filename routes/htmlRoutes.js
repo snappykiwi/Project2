@@ -25,30 +25,33 @@ module.exports = function (app) {
 
   // user homepage
   app.get("/home", middleware.isLoggedIn, function (req, res) {
+    let currentUserId = req.user.id;
+
     db.Event.findAll({
       where: {
-        UserId: req.user.id
-      }
-    }).then(function (dbUserEvents) {
-      console.log(dbUserEvents);
-
-      db.Invite.findAll({
+        [Op.or]: [{
+          UserId: currentUserId
+        }]
+      },
+      order : ["eventDate"],         
+      include : [{
+        model: db.Invite,
         where: {
-          status: "accepted"
+          UserId: currentUserId,
+          status: 'accepted'
         },
-        include: [db.Event]
-      }).then(function(acceptedInv) {
-        console.log(acceptedInv);
-
+        required: false
+      }]
+    })
+      .then(function(userEvt){
+        
         res.render("userHome", {
           msg: "Welcome Back",
-          userEvents: dbUserEvents,
-          acceptedInv: acceptedInv
-        })
+          userEvents: userEvt,
+          // acceptedInv: acceptedEvt
+        })     
+    });
 
-      })
-
-    })
   });
 
   // create event page
@@ -98,7 +101,8 @@ module.exports = function (app) {
   app.get("/inbox", middleware.isLoggedIn, function (req, res) {
     db.Invite.findAll({
       where: {
-        UserId: req.user.id
+        status: "pending",
+        UserId: req.user.id,
       },
       include: [{
         model: db.Event,
@@ -120,7 +124,7 @@ module.exports = function (app) {
   app.get("/invite/:id/event/:eventId", function (req, res) {
     db.Invite.findOne({
       where: {
-        id: req.params.id, 
+        id: req.params.id,
         EventUuid: req.params.eventId
       },
       include: [{
@@ -134,7 +138,33 @@ module.exports = function (app) {
       }]
     }).then(function (dbInvites) {
       console.log(dbInvites.Event.dataValues.eventTitle);
-      res.render("eventInvite", {invites: dbInvites})
+      res.render("eventInvite", { invites: dbInvites })
+    });
+  });
+
+  app.get("/invite/:userId/request/:requestId", function(req, res) {
+    db.Invite.findAll({
+      where: {
+        UserId: req.params.userId,
+        RequestUuid: req.params.requestId
+      },
+      include: [{
+        model: db.Request,
+        include: [db.User]
+      }, {
+        model: db.User
+      }, {
+        model: db.Event,
+        include: [db.User]
+      }] 
+    }).then(function (dbInvites) {
+      console.log(dbInvites[0].Request.User);
+      // console.log(dbInvites);
+
+      res.render("reqInvite", { 
+        invites: dbInvites, 
+        request: dbInvites[0].Request
+      } )
     });
   });
 
